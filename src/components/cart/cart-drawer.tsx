@@ -17,14 +17,15 @@ import { formatINR } from "@/lib/format";
 import { useHydrated } from "@/lib/use-hydrated";
 
 export function CartDrawer() {
-  const { isOpen, items, closeCart, updateQuantity, removeItem, subtotal } = useCartStore((s) => ({
-    isOpen: s.isOpen,
-    items: s.items,
-    closeCart: s.closeCart,
-    updateQuantity: s.updateQuantity,
-    removeItem: s.removeItem,
-    subtotal: s.subtotal,
-  }));
+  // Use individual primitive selectors — inline object selectors return a new
+  // object reference every render and cause an infinite update loop in React 19
+  // + Zustand v5 because useSyncExternalStore sees the snapshot as "always changing".
+  const isOpen = useCartStore((s) => s.isOpen);
+  const items = useCartStore((s) => s.items);
+  const closeCart = useCartStore((s) => s.closeCart);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeItem = useCartStore((s) => s.removeItem);
+  const subtotal = useCartStore((s) => s.subtotal);
   const hydrated = useHydrated();
   const total = hydrated ? subtotal() : 0;
   const count = hydrated ? items.reduce((s, i) => s + i.quantity, 0) : 0;

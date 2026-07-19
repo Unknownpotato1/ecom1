@@ -28,7 +28,11 @@ export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const openCart = useCartStore((s) => s.openCart);
-  const cartCount = useCartStore((s) => s.totalItems());
+  // IMPORTANT: select the items array, not totalItems() — calling a function
+  // inside the selector returns a new value every render and causes an infinite
+  // update loop in React 19 + Zustand v5.
+  const cartItems = useCartStore((s) => s.items);
+  const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
   const setSearchOpen = useUIStore((s) => s.setSearchOpen);
   const wishlistCount = useWishlistStore((s) => s.ids.length);
   const { user } = useAuth();
