@@ -50,7 +50,7 @@ export function SiteFooter() {
   };
 
   return (
-    <footer className="mt-auto bg-foreground text-background">
+    <footer className="mt-auto bg-foreground text-background pb-16 lg:pb-0">
       {/* Trust badges */}
       <div className="border-b border-background/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">

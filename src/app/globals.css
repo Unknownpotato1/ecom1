@@ -130,14 +130,23 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    /* Prevent horizontal scroll on mobile — any accidental overflow
+       gets clipped instead of causing a sideways scroll. */
+    overflow-x: hidden;
+    /* Mobile: use 100% of the dynamic viewport height (accounts for
+       browser chrome on iOS/Android). Falls back to 100vh on older browsers. */
+    min-height: 100vh;
+    min-height: 100dvh;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-playfair), Georgia, serif;
     letter-spacing: -0.015em;
   }
-  /* Smooth scroll */
+  /* Ensure the html element also prevents horizontal overflow */
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
   }
   /* Premium scrollbar */
   ::-webkit-scrollbar {

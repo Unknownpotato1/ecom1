@@ -33,7 +33,7 @@ export function HeroSlider() {
       aria-roledescription="carousel"
       aria-label="Featured collections"
     >
-      <div className="relative h-[70vh] sm:h-[80vh] lg:h-[88vh] min-h-[480px]">
+      <div className="relative h-[60vh] sm:h-[70vh] lg:h-[85vh] min-h-[420px] max-h-[800px]">
         <AnimatePresence mode="sync">
           {slides.map((slide, i) => {
             const active = i === idx;

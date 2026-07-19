@@ -25,14 +25,14 @@ export function SectionHeading({
   actionHref?: string;
 }) {
   return (
-    <div className={`flex items-end justify-between gap-4 mb-8 ${align === "center" ? "flex-col text-center" : ""}`}>
-      <div className={align === "center" ? "max-w-2xl mx-auto" : ""}>
+    <div className={`flex items-end justify-between gap-4 mb-8 ${align === "center" ? "flex-col text-center" : "flex-wrap"}`}>
+      <div className={align === "center" ? "max-w-2xl mx-auto" : "min-w-0 flex-1"}>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight"
+          className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight"
         >
           {title}
         </motion.h2>

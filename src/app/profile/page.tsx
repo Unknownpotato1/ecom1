@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { User, Package, Heart, MapPin, LogOut, Edit2, Plus, Trash2, Check } from "lucide-react";
+import { User, Package, Heart, MapPin, LogOut, Edit2, Plus, Trash2, Check, LayoutDashboard, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,7 +42,7 @@ interface Address {
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, signOut, isLoading } = useAuth();
+  const { user, signOut, isLoading, isAdmin } = useAuth();
   const hydrated = useHydrated();
   const { ids: wishlistIds } = useWishlistStore();
   const [orders, setOrders] = useState<StoredOrder[]>([]);
@@ -133,16 +133,47 @@ export default function ProfilePage() {
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-          <User className="h-8 w-8 text-primary" />
+          {user.avatarUrl ? (
+             
+            <img src={user.avatarUrl} alt={user.name} className="w-full h-full rounded-full object-cover" />
+          ) : (
+            <User className="h-8 w-8 text-primary" />
+          )}
         </div>
-        <div className="flex-1">
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold">{user.name}</h1>
-          <p className="text-sm text-muted-foreground">{user.email}</p>
+        <div className="flex-1 min-w-0">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold truncate">{user.name}</h1>
+          <p className="text-sm text-muted-foreground truncate">{user.email}</p>
         </div>
-        <Button variant="outline" onClick={onSignOut}>
+        <Button variant="outline" onClick={onSignOut} className="shrink-0">
           <LogOut className="h-4 w-4 mr-2" /> Sign Out
         </Button>
       </div>
+
+      {/* Admin panel access — only visible to the authorized admin.
+          No mention of admin anywhere else in the UI. */}
+      {isAdmin && (
+        <div className="mb-8 space-y-2">
+          <Link
+            href="/admin/dashboard"
+            className="flex items-center gap-4 p-4 sm:p-5 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:from-primary/95 hover:to-primary/85 transition-all group shadow-md"
+          >
+            <div className="w-11 h-11 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
+              <LayoutDashboard className="h-5 w-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-base sm:text-lg">Admin Panel</p>
+              <p className="text-xs sm:text-sm text-primary-foreground/80">
+                Manage products, orders, customers, theme & more
+              </p>
+            </div>
+            <ExternalLink className="h-4 w-4 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0" />
+          </Link>
+          {/* Mobile tip — admin panel works best on desktop for customization */}
+          <p className="text-xs text-muted-foreground px-1 lg:hidden">
+            💡 For the best customization experience, open the admin panel on a desktop browser.
+          </p>
+        </div>
+      )}
 
       <Tabs defaultValue="orders">
         <TabsList className="w-full justify-start overflow-x-auto no-scrollbar h-auto">

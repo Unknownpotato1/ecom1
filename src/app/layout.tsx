@@ -73,7 +73,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-background text-foreground min-h-screen flex flex-col`}
+        className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-background text-foreground min-h-screen min-h-dvh flex flex-col`}
       >
         <QueryProvider>
           <AuthProvider>
