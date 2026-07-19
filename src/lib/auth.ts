@@ -1,10 +1,20 @@
 // ============================================================================
-// Aurora & Co. — Mock auth layer.
-// In production this is replaced by Firebase Auth (see README).
-// The admin email is hard-checked: only shahbazahmad9783@gmail.com is admin.
+// Aurora & Co. — Auth layer.
+// Real Firebase Google Authentication. No fake/demo sign-in.
+// The admin email check is the ONLY gate to the admin panel.
 // ============================================================================
 
-export const ADMIN_EMAIL = "shahbazahmad9783@gmail.com";
+import {
+  signInWithGoogle,
+  signOutFirebase,
+  subscribeToAuthChanges,
+  isAdminEmail,
+  ADMIN_EMAIL,
+  isFirebaseConfigured,
+} from "@/lib/firebase";
+import type { User as FirebaseUser } from "firebase/auth";
+
+export { ADMIN_EMAIL, isAdminEmail, isFirebaseConfigured };
 
 export interface AuthUser {
   id: string;
@@ -17,8 +27,15 @@ export interface AuthUser {
 
 const STORAGE_KEY = "aurora-auth-user";
 
-function generateId() {
-  return `u_${Math.random().toString(36).slice(2, 10)}${Date.now().toString(36)}`;
+function toAuthUser(fb: FirebaseUser): AuthUser {
+  return {
+    id: fb.uid,
+    email: fb.email ?? "",
+    name: fb.displayName ?? fb.email?.split("@")[0] ?? "Customer",
+    mobile: fb.phoneNumber ?? undefined,
+    avatarUrl: fb.photoURL ?? undefined,
+    role: isAdminEmail(fb.email) ? "admin" : "customer",
+  };
 }
 
 export function getStoredUser(): AuthUser | null {
@@ -38,62 +55,30 @@ export function setStoredUser(user: AuthUser | null) {
   else window.localStorage.removeItem(STORAGE_KEY);
 }
 
-export function isAdminEmail(email: string | undefined | null): boolean {
-  if (!email) return false;
-  return email.trim().toLowerCase() === ADMIN_EMAIL;
+// Subscribe to Firebase auth state changes.
+// Calls the callback with the parsed AuthUser (or null) and persists to localStorage.
+export function onAuthChange(callback: (user: AuthUser | null) => void): () => void {
+  return subscribeToAuthChanges((fbUser) => {
+    if (fbUser) {
+      const user = toAuthUser(fbUser);
+      setStoredUser(user);
+      callback(user);
+    } else {
+      setStoredUser(null);
+      callback(null);
+    }
+  });
 }
 
-// Mock sign-in. Real implementation calls Firebase Auth.
-export async function mockSignIn(email: string, _password: string): Promise<AuthUser> {
-  await new Promise((r) => setTimeout(r, 600)); // simulate latency
-  const isAdmin = isAdminEmail(email);
-  const name = email.split("@")[0]?.replace(/[._-]/g, " ").replace(/\b\w/g, (m) => m.toUpperCase()) || "Customer";
-  const user: AuthUser = {
-    id: generateId(),
-    email,
-    name: isAdmin ? "Shahbaz Ahmad" : name,
-    role: isAdmin ? "admin" : "customer",
-    avatarUrl: undefined,
-  };
+// Real Google sign-in via Firebase popup.
+export async function signInWithGooglePopup(): Promise<AuthUser> {
+  const fbUser = await signInWithGoogle();
+  const user = toAuthUser(fbUser);
   setStoredUser(user);
   return user;
 }
 
-export async function mockSignUp(name: string, email: string, _password: string): Promise<AuthUser> {
-  await new Promise((r) => setTimeout(r, 600));
-  const isAdmin = isAdminEmail(email);
-  const user: AuthUser = {
-    id: generateId(),
-    email,
-    name,
-    role: isAdmin ? "admin" : "customer",
-  };
-  setStoredUser(user);
-  return user;
-}
-
-export async function mockGoogleSignIn(): Promise<AuthUser> {
-  await new Promise((r) => setTimeout(r, 800));
-  // In real app, opens Google OAuth popup. Here we simulate a normal user.
-  // To demo admin, sign in with shahbazahmad9783@gmail.com manually.
-  const email = "guest.aurora@gmail.com";
-  const user: AuthUser = {
-    id: generateId(),
-    email,
-    name: "Guest User",
-    role: "customer",
-  };
-  setStoredUser(user);
-  return user;
-}
-
-export async function mockSignOut() {
+export async function signOutUser(): Promise<void> {
+  await signOutFirebase();
   setStoredUser(null);
-}
-
-export async function mockForgotPassword(email: string): Promise<{ ok: boolean }> {
-  await new Promise((r) => setTimeout(r, 800));
-  // In real app, calls Firebase sendPasswordResetEmail.
-  if (!email.includes("@")) return { ok: false };
-  return { ok: true };
 }

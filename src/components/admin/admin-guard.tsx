@@ -2,41 +2,42 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
-import { ShieldAlert, Loader2, ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Button } from "@/components/ui/button";
-import { ADMIN_EMAIL } from "@/lib/auth";
 
 /**
- * AdminGuard — wraps any admin route that requires admin privileges.
- * - While auth state is loading → spinner.
- * - If not signed in → redirect to /admin (login gate).
- * - If signed in but not admin → show 403 page.
+ * AdminGuard — wraps any admin route.
+ *
+ * Behavior:
+ * - While auth state is loading → minimal spinner (no admin hints leaked).
+ * - If not signed in → redirect to /login (the standard customer login page).
+ * - If signed in but NOT the admin → show 404 (the page does not exist for them).
  * - If admin → render children.
+ *
+ * The 404 is intentional: non-admins must never see that an admin area exists.
  */
 export function AdminGuard({ children }: { children: React.ReactNode }) {
   const { user, isLoading, isAdmin } = useAuth();
   const router = useRouter();
-  const pathname = usePathname();
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     if (isLoading) return;
     if (!user) {
-      const target = pathname ? `/admin?next=${encodeURIComponent(pathname)}` : "/admin";
-      router.replace(target);
-      // Defer the redirecting flag so we don't trigger a cascading render.
+      // Not signed in — send to the regular login page.
+      // No mention of admin anywhere.
+      router.replace("/login");
       const id = setTimeout(() => setRedirecting(true), 0);
       return () => clearTimeout(id);
     }
-  }, [isLoading, user, pathname, router]);
+  }, [isLoading, user, router]);
 
   if (isLoading || redirecting) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-muted-foreground">
-        <Loader2 className="size-6 animate-spin text-primary" />
-        <p className="text-sm">Verifying admin session…</p>
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <Loader2 className="size-5 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -45,32 +46,19 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
     return null; // redirect in progress
   }
 
+  // Signed in but NOT the admin → show 404 (indistinguishable from a real 404).
   if (!isAdmin) {
     return (
-      <div className="flex min-h-[80vh] items-center justify-center p-6">
-        <div className="mx-auto max-w-md text-center">
-          <div className="mx-auto mb-6 flex size-16 items-center justify-center rounded-full bg-destructive/10 text-destructive">
-            <ShieldAlert className="size-8" />
-          </div>
-          <h1 className="font-serif text-3xl font-semibold tracking-tight">
-            Access Restricted
-          </h1>
-          <p className="mt-3 text-muted-foreground">
-            You don&apos;t have permission to access admin. Only the store owner
-            can access this area.
-          </p>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Admin access is restricted to{" "}
-            <span className="font-mono text-foreground">{ADMIN_EMAIL}</span>.
-          </p>
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <Button asChild>
-              <Link href="/">
-                <ArrowLeft className="size-4" />
-                Back to store
-              </Link>
-            </Button>
-          </div>
+      <div className="mx-auto max-w-2xl px-4 sm:px-6 py-20 lg:py-32 text-center">
+        <p className="font-serif text-[10rem] sm:text-[14rem] leading-none font-bold text-gold-gradient">404</p>
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold -mt-4">Page Not Found</h1>
+        <p className="text-muted-foreground mt-3 max-w-md mx-auto">
+          The page you&rsquo;re looking for doesn&rsquo;t exist or has been moved.
+        </p>
+        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <Button asChild size="lg">
+            <Link href="/">Back to Home</Link>
+          </Button>
         </div>
       </div>
     );

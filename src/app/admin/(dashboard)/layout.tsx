@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -119,20 +119,24 @@ function AdminTopbar() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm" className="gap-2 pl-1.5">
               <Avatar className="size-7">
+                {user?.avatarUrl ? (
+                   
+                  <AvatarImage src={user.avatarUrl} alt={user.name} />
+                ) : null}
                 <AvatarFallback className="bg-primary text-[11px] font-semibold text-primary-foreground">
-                  {user?.name?.charAt(0) ?? "S"}
+                  {user?.name?.charAt(0).toUpperCase() ?? "A"}
                 </AvatarFallback>
               </Avatar>
               <span className="hidden text-sm font-medium md:inline">
-                {user?.name ?? "Shahbaz Ahmad"}
+                {user?.name ?? "Admin"}
               </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel className="flex flex-col gap-1">
-              <span className="text-sm font-medium">{user?.name ?? "Shahbaz Ahmad"}</span>
+              <span className="text-sm font-medium">{user?.name ?? "Admin"}</span>
               <span className="truncate text-xs font-normal text-muted-foreground">
-                {user?.email ?? "shahbazahmad9783@gmail.com"}
+                {user?.email ?? ""}
               </span>
               <Badge variant="secondary" className="mt-1 w-fit">Store Owner</Badge>
             </DropdownMenuLabel>

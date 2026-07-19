@@ -138,9 +138,6 @@ export default function ProfilePage() {
         <div className="flex-1">
           <h1 className="font-serif text-2xl sm:text-3xl font-bold">{user.name}</h1>
           <p className="text-sm text-muted-foreground">{user.email}</p>
-          {user.role === "admin" && (
-            <Badge className="mt-1 bg-gold text-gold-foreground">Admin</Badge>
-          )}
         </div>
         <Button variant="outline" onClick={onSignOut}>
           <LogOut className="h-4 w-4 mr-2" /> Sign Out

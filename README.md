@@ -19,7 +19,7 @@ A production-ready, conversion-optimized storefront inspired by Shopify premium 
 - **Wishlist** — LocalStorage for guests, Firestore-ready for logged-in users.
 - **Checkout** — Guest checkout OR Google login, India Post PIN auto-fill, prepaid (15% off) / COD / Partial COD (10% advance), coupon, gift note, order summary with shipping + tax, full validation.
 - **Order success / failed / tracking** — Timeline UI with all 5 statuses (confirmed → packed → shipped → out for delivery → delivered), invoice-ready order details.
-- **Auth** — Login, Register, Forgot Password, Google sign-in, demo admin (`shahbazahmad9783@gmail.com` + any password).
+- **Auth** — Google sign-in only (real Firebase Authentication). No email/password, no demo accounts.
 - **Profile** — Orders, Addresses, Wishlist, Edit Profile.
 - **Content pages** — About, Contact, Privacy, Refund, Shipping, Terms, FAQ, Search, 404.
 - **Search** — Instant search drawer with recent searches, trending searches, product/collection/category results.
@@ -33,7 +33,7 @@ A production-ready, conversion-optimized storefront inspired by Shopify premium 
 - **Theme Customizer** — Color pickers, font selectors, radius/width/spacing sliders, live preview pane.
 - **Settings** — Store, Payment, Shipping, Social, Backups (5 tabs).
 - **Logs** — Activity log with filters.
-- **Admin access enforced** — Only `shahbazahmad9783@gmail.com` can access admin. Everyone else gets a 403 page.
+- **Admin access enforced** — Only the authorized Google account can access admin. Non-admins see a 404 page (the admin area is invisible to them).
 
 ### Cross-cutting
 - **Cart & Wishlist** — Zustand + persist (localStorage). Firestore-ready for logged-in sync.
@@ -92,15 +92,15 @@ bun run dev
 # Open http://localhost:3000
 ```
 
-### Admin Demo
-1. Visit `/admin`.
-2. Sign in with `shahbazahmad9783@gmail.com` and **any password**.
-3. You'll be redirected to `/admin/dashboard`.
-4. **Any other email** will see a 403 Unauthorized page — admin access is hard-restricted to the single configured email.
+### Admin Access
+1. Sign in via `/login` using the authorized Google account (configured via `ADMIN_EMAIL` env var).
+2. After signing in, navigate to `/admin/dashboard` directly.
+3. The `/admin` URL itself shows a 404 to anyone who isn't the authorized admin — there is no admin login page, no admin hints, no demo accounts.
+4. To demo: sign in with the authorized Google account, then visit `/admin/dashboard`.
 
 ### Customer Demo
 - Browse the homepage, add products to cart, checkout as guest, place a mock order, then track it on `/order-tracking`.
-- Or create an account at `/register` to see orders saved to your profile.
+- Or sign in with Google at `/login` to see orders saved to your profile.
 
 ---
 
@@ -384,7 +384,7 @@ bun run db:reset   # Reset database
 
 ## 🔒 Security Notes
 
-- **Admin access** is hard-restricted to `shahbazahmad9783@gmail.com` via `src/lib/auth.ts`. The check happens both client-side (in `AdminGuard`) and should be enforced server-side via Firebase custom claims or Firestore rules.
+- **Admin access** is hard-restricted to the configured `ADMIN_EMAIL` via `src/lib/auth.ts`. The check happens client-side in `AdminGuard`. Non-admins see a 404 page (no admin UI is ever rendered). For full security, also enforce server-side via Firebase custom claims or Firestore rules.
 - **Razorpay payment verification** must happen server-side (signature verification) — never trust client-side payment success.
 - **Sanitize all user-generated HTML** in custom sections. `src/lib/format.ts` exports `sanitizeHtml()` for this.
 - **Rate-limit** sensitive endpoints (login, register, coupon apply, checkout) — Vercel Edge Middleware or Upstash Ratelimit.
