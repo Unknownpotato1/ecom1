@@ -92,66 +92,70 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Links */}
-          <div className="lg:col-span-2">
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">Shop</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.shop.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="text-sm text-background/70 hover:text-gold transition-colors">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="lg:col-span-2">
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">Help</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.help.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="text-sm text-background/70 hover:text-gold transition-colors">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="lg:col-span-2">
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">Company</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.company.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="text-sm text-background/70 hover:text-gold transition-colors">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Links — 2x2 grid on mobile/tablet, 4 columns on desktop */}
+          <div className="lg:col-span-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4">
+              <div>
+                <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">Shop</h4>
+                <ul className="space-y-2.5">
+                  {footerLinks.shop.map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} className="text-sm text-background/70 hover:text-gold transition-colors">
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">Help</h4>
+                <ul className="space-y-2.5">
+                  {footerLinks.help.map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} className="text-sm text-background/70 hover:text-gold transition-colors">
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">Company</h4>
+                <ul className="space-y-2.5">
+                  {footerLinks.company.map((l) => (
+                    <li key={l.href}>
+                      <Link href={l.href} className="text-sm text-background/70 hover:text-gold transition-colors">
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-          {/* Contact */}
-          <div className="lg:col-span-2 space-y-3">
-            <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">Contact</h4>
-            <a href="tel:+918000000000" className="flex items-center gap-2 text-sm text-background/70 hover:text-gold">
-              <Phone className="h-4 w-4" /> +91 80000 00000
-            </a>
-            <a href="mailto:hello@aurora-co.in" className="flex items-center gap-2 text-sm text-background/70 hover:text-gold">
-              <Mail className="h-4 w-4" /> hello@aurora-co.in
-            </a>
-            <p className="flex items-start gap-2 text-sm text-background/70">
-              <MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Mumbai, Maharashtra, India
-            </p>
-            <div className="flex items-center gap-3 pt-2">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="text-background/70 hover:text-gold">
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="text-background/70 hover:text-gold">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube" className="text-background/70 hover:text-gold">
-                <Youtube className="h-5 w-5" />
-              </a>
+              {/* Contact */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">Contact</h4>
+                <a href="tel:+918000000000" className="flex items-center gap-2 text-sm text-background/70 hover:text-gold">
+                  <Phone className="h-4 w-4 shrink-0" /> +91 80000 00000
+                </a>
+                <a href="mailto:hello@aurora-co.in" className="flex items-center gap-2 text-sm text-background/70 hover:text-gold">
+                  <Mail className="h-4 w-4 shrink-0" /> hello@aurora-co.in
+                </a>
+                <p className="flex items-start gap-2 text-sm text-background/70">
+                  <MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Mumbai, Maharashtra, India
+                </p>
+                <div className="flex items-center gap-3 pt-2">
+                  <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="text-background/70 hover:text-gold">
+                    <Instagram className="h-5 w-5" />
+                  </a>
+                  <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="text-background/70 hover:text-gold">
+                    <Facebook className="h-5 w-5" />
+                  </a>
+                  <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube" className="text-background/70 hover:text-gold">
+                    <Youtube className="h-5 w-5" />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

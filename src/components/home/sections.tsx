@@ -529,3 +529,53 @@ export function NewsletterSection({ title = "Join the Aurora Circle" }: { title?
     </section>
   );
 }
+
+// --------------------------------------------------------------------------
+// Marquee — customizable scrolling text/marquee section
+// --------------------------------------------------------------------------
+export function MarqueeSection({
+  items = [],
+  speed = "normal",
+  background = "#6B2D5C",
+  text = "#FFFFFF",
+}: {
+  items?: string[];
+  speed?: "slow" | "normal" | "fast";
+  background?: string;
+  text?: string;
+}) {
+  // Default items if none provided
+  const marqueeItems = items.length > 0 ? items : [
+    "✦ Handcrafted in India",
+    "✦ Free Shipping on Prepaid Orders",
+    "✦ COD Available",
+    "✦ 7-Day Returns",
+    "✦ Premium Quality",
+    "✦ Secure Checkout",
+  ];
+  const duration = speed === "slow" ? "40s" : speed === "fast" ? "15s" : "25s";
+  // Duplicate items so the marquee loops seamlessly
+  const doubled = [...marqueeItems, ...marqueeItems];
+
+  return (
+    <section
+      className="overflow-hidden py-3 sm:py-4"
+      style={{ background, color: text }}
+    >
+      <div
+        className="flex items-center gap-8 whitespace-nowrap marquee"
+        style={{ animationDuration: duration }}
+      >
+        {doubled.map((item, i) => (
+          <span
+            key={i}
+            className="text-sm sm:text-base font-medium tracking-wide flex items-center gap-8"
+          >
+            {item}
+            <span style={{ color: text, opacity: 0.4 }}>•</span>
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}

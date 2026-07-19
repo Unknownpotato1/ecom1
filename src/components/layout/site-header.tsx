@@ -65,7 +65,10 @@ export function SiteHeader() {
   if (isAdmin) return null;
 
   const isHome = pathname === "/";
-  const transparent = isHome && !scrolled;
+  // Header is always solid (glass background) for readability.
+  // Previously was transparent on the homepage at top, but that made
+  // nav text invisible against light hero images.
+  const transparent = false;
 
   return (
     <>

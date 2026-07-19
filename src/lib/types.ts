@@ -282,6 +282,7 @@ export interface HomepageSection {
     | "testimonials"
     | "brand_story"
     | "newsletter"
+    | "marquee"
     | "custom_html";
   title?: string;
   enabled: boolean;

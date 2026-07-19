@@ -19,6 +19,7 @@ import {
   InstagramGallerySection,
   BrandStorySection,
   NewsletterSection,
+  MarqueeSection,
 } from "@/components/home/sections";
 
 export default function HomePage() {
@@ -95,6 +96,16 @@ export default function HomePage() {
             );
           case "newsletter":
             return <NewsletterSection key={section.id} title={(cfg.title as string) ?? "Join the Aurora Circle"} />;
+          case "marquee":
+            return (
+              <MarqueeSection
+                key={section.id}
+                items={(cfg.items as string[]) ?? undefined}
+                speed={(cfg.speed as "slow" | "normal" | "fast") ?? "normal"}
+                background={(cfg.background as string) ?? "#6B2D5C"}
+                text={(cfg.text as string) ?? "#FFFFFF"}
+              />
+            );
           case "custom_html":
             return (
               <div

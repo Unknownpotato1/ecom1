@@ -129,40 +129,41 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8 lg:py-12">
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-8">
-        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-          {user.avatarUrl ? (
-             
-            <img src={user.avatarUrl} alt={user.name} className="w-full h-full rounded-full object-cover" />
-          ) : (
-            <User className="h-8 w-8 text-primary" />
-          )}
+    <div className="mx-auto max-w-5xl px-4 sm:px-6 py-6 lg:py-12 pb-24 lg:pb-12">
+      {/* Header — stacks on mobile, row on desktop */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+            {user.avatarUrl ? (
+               
+              <img src={user.avatarUrl} alt={user.name} className="w-full h-full rounded-full object-cover" />
+            ) : (
+              <User className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
+            )}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h1 className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold truncate">{user.name}</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">{user.email}</p>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold truncate">{user.name}</h1>
-          <p className="text-sm text-muted-foreground truncate">{user.email}</p>
-        </div>
-        <Button variant="outline" onClick={onSignOut} className="shrink-0">
+        <Button variant="outline" onClick={onSignOut} className="shrink-0 self-start sm:self-auto">
           <LogOut className="h-4 w-4 mr-2" /> Sign Out
         </Button>
       </div>
 
-      {/* Admin panel access — only visible to the authorized admin.
-          No mention of admin anywhere else in the UI. */}
+      {/* Admin panel access — only visible to the authorized admin. */}
       {isAdmin && (
-        <div className="mb-8 space-y-2">
+        <div className="mb-6 space-y-2">
           <Link
             href="/admin/dashboard"
-            className="flex items-center gap-4 p-4 sm:p-5 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:from-primary/95 hover:to-primary/85 transition-all group shadow-md"
+            className="flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-primary-foreground hover:from-primary/95 hover:to-primary/85 transition-all group shadow-md"
           >
-            <div className="w-11 h-11 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-lg bg-white/15 flex items-center justify-center shrink-0">
               <LayoutDashboard className="h-5 w-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-base sm:text-lg">Admin Panel</p>
-              <p className="text-xs sm:text-sm text-primary-foreground/80">
+              <p className="font-semibold text-sm sm:text-base lg:text-lg">Admin Panel</p>
+              <p className="text-xs text-primary-foreground/80 truncate">
                 Manage products, orders, customers, theme & more
               </p>
             </div>
@@ -176,17 +177,17 @@ export default function ProfilePage() {
       )}
 
       <Tabs defaultValue="orders">
-        <TabsList className="w-full justify-start overflow-x-auto no-scrollbar h-auto">
-          <TabsTrigger value="orders" className="flex items-center gap-1.5">
+        <TabsList className="w-full justify-start overflow-x-auto no-scrollbar h-auto gap-1">
+          <TabsTrigger value="orders" className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm shrink-0">
             <Package className="h-4 w-4" /> Orders ({orders.length})
           </TabsTrigger>
-          <TabsTrigger value="addresses" className="flex items-center gap-1.5">
+          <TabsTrigger value="addresses" className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm shrink-0">
             <MapPin className="h-4 w-4" /> Addresses
           </TabsTrigger>
-          <TabsTrigger value="wishlist" className="flex items-center gap-1.5">
+          <TabsTrigger value="wishlist" className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm shrink-0">
             <Heart className="h-4 w-4" /> Wishlist ({wishlistItems.length})
           </TabsTrigger>
-          <TabsTrigger value="profile" className="flex items-center gap-1.5">
+          <TabsTrigger value="profile" className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm shrink-0">
             <Edit2 className="h-4 w-4" /> Edit Profile
           </TabsTrigger>
         </TabsList>
