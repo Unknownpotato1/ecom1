@@ -224,3 +224,37 @@ export const useCouponStore = create<CouponState>()(
     }
   )
 );
+
+// ---------------------------------------------------------------------------
+// Homepage sections — admin-editable, persisted, read by storefront homepage.
+// When the admin saves in /admin/homepage-builder, this store is updated.
+// The storefront homepage reads from this store (falling back to defaults
+// from data.ts if no custom config exists).
+// ---------------------------------------------------------------------------
+import { homepageSections as defaultSections } from "@/lib/data";
+import type { HomepageSection } from "@/lib/types";
+
+interface HomepageState {
+  sections: HomepageSection[];
+  customized: boolean; // true once admin has saved at least once
+  setSections: (sections: HomepageSection[]) => void;
+  save: (sections: HomepageSection[]) => void;
+  reset: () => void;
+}
+
+export const useHomepageStore = create<HomepageState>()(
+  persist(
+    (set) => ({
+      sections: defaultSections,
+      customized: false,
+      setSections: (sections) => set({ sections }),
+      save: (sections) => set({ sections, customized: true }),
+      reset: () => set({ sections: defaultSections, customized: false }),
+    }),
+    {
+      name: "aurora-homepage-layout",
+      storage: createJSONStorage(() => (typeof window !== "undefined" ? localStorage : (undefined as unknown as Storage))),
+      partialize: (s) => ({ sections: s.sections, customized: s.customized }) as HomepageState,
+    }
+  )
+);

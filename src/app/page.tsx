@@ -1,4 +1,8 @@
-import { homepageSections } from "@/lib/data";
+"use client";
+
+import { useHomepageStore } from "@/lib/stores";
+import { homepageSections as defaultSections } from "@/lib/data";
+import { useHydrated } from "@/lib/use-hydrated";
 import { HeroSlider } from "@/components/home/hero-slider";
 import { RecentlyViewed } from "@/components/home/recently-viewed";
 import {
@@ -18,10 +22,17 @@ import {
 } from "@/components/home/sections";
 
 export default function HomePage() {
-  // Filter + sort enabled sections — admin can reorder / disable / delete.
-  const sections = [...homepageSections]
-    .filter((s) => s.enabled)
-    .sort((a, b) => a.sortOrder - b.sortOrder);
+  const hydrated = useHydrated();
+  const savedSections = useHomepageStore((s) => s.sections);
+  const customized = useHomepageStore((s) => s.customized);
+
+  // Use saved sections if the admin has customized, otherwise use defaults.
+  // On the server (before hydration), always render defaults so the page
+  // is statically generated correctly. After hydration on the client,
+  // swap in the saved sections if they exist.
+  const sections = hydrated && customized
+    ? [...savedSections].filter((s) => s.enabled).sort((a, b) => a.sortOrder - b.sortOrder)
+    : [...defaultSections].filter((s) => s.enabled).sort((a, b) => a.sortOrder - b.sortOrder);
 
   return (
     <>
@@ -85,7 +96,6 @@ export default function HomePage() {
           case "newsletter":
             return <NewsletterSection key={section.id} title={(cfg.title as string) ?? "Join the Aurora Circle"} />;
           case "custom_html":
-            // Admin can inject custom HTML; sanitized server-side.
             return (
               <div
                 key={section.id}

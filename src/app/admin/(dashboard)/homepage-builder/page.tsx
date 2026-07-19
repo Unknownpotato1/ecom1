@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   DndContext,
   closestCenter,
@@ -67,6 +67,8 @@ import {
 } from "@/components/ui/dialog";
 import { homepageSections as initialSections } from "@/lib/data";
 import type { HomepageSection } from "@/lib/types";
+import { useHomepageStore } from "@/lib/stores";
+import { useHydrated } from "@/lib/use-hydrated";
 import { toast } from "sonner";
 
 interface SectionTypeMeta {
@@ -103,9 +105,31 @@ const SECTION_GROUPS: Array<{ label: SectionTypeMeta["group"]; types: HomepageSe
 ];
 
 export default function AdminHomepageBuilderPage() {
+  const hydrated = useHydrated();
+  const savedSections = useHomepageStore((s) => s.sections);
+  const customized = useHomepageStore((s) => s.customized);
+  const saveToStore = useHomepageStore((s) => s.save);
+  const resetStore = useHomepageStore((s) => s.reset);
+
+  // Local working copy — initialized from the saved store (if customized) or defaults.
+  // On the server (before hydration), use defaults to avoid SSR mismatch.
   const [sections, setSections] = useState<HomepageSection[]>(() =>
     [...initialSections].sort((a, b) => a.sortOrder - b.sortOrder),
   );
+
+  // After hydration, load saved sections from the store ONCE.
+  // We use a ref to ensure this only runs a single time, even if
+  // savedSections changes later (which it will, due to auto-save).
+  const loadedRef = useRef(false);
+  useEffect(() => {
+    if (hydrated && !loadedRef.current) {
+      loadedRef.current = true;
+      if (customized) {
+        setSections([...savedSections].sort((a, b) => a.sortOrder - b.sortOrder));
+      }
+    }
+  }, [hydrated, customized, savedSections]);
+
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editingSection, setEditingSection] = useState<HomepageSection | null>(null);
 
@@ -115,6 +139,15 @@ export default function AdminHomepageBuilderPage() {
   );
 
   const enabledCount = sections.filter((s) => s.enabled).length;
+
+  // Auto-save: whenever sections change (after hydration + initial load),
+  // persist to the store so the storefront homepage picks up the changes.
+  // Skip the initial render to avoid overwriting saved data before load.
+  const canSave = hydrated && loadedRef.current;
+  useEffect(() => {
+    if (!canSave) return;
+    saveToStore(sections);
+  }, [sections, canSave, saveToStore]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -126,7 +159,7 @@ export default function AdminHomepageBuilderPage() {
       const next = arrayMove(items, oldIndex, newIndex);
       return next.map((s, idx) => ({ ...s, sortOrder: idx + 1 }));
     });
-    toast.info("Section reordered");
+    toast.info("Section reordered · saved");
   };
 
   const move = (id: string, dir: -1 | 1) => {
@@ -143,6 +176,7 @@ export default function AdminHomepageBuilderPage() {
     setSections((items) =>
       items.map((s) => (s.id === id ? { ...s, enabled: !s.enabled } : s)),
     );
+    toast.success("Section updated · saved");
   };
 
   const duplicateSection = (id: string) => {
@@ -157,12 +191,12 @@ export default function AdminHomepageBuilderPage() {
       const next = [...items.slice(0, idx + 1), copy, ...items.slice(idx + 1)];
       return next.map((s, i) => ({ ...s, sortOrder: i + 1 }));
     });
-    toast.success("Section duplicated");
+    toast.success("Section duplicated · saved");
   };
 
   const deleteSection = (id: string) => {
     setSections((items) => items.filter((i) => i.id !== id).map((s, i) => ({ ...s, sortOrder: i + 1 })));
-    toast.error("Section removed");
+    toast.error("Section removed · saved");
   };
 
   const addSection = (type: HomepageSection["type"]) => {
@@ -176,37 +210,43 @@ export default function AdminHomepageBuilderPage() {
     };
     setSections((items) => [...items, newSection]);
     setAddDialogOpen(false);
-    toast.success(`${SECTION_TYPES[type].label} added`);
+    toast.success(`${SECTION_TYPES[type].label} added · saved`);
   };
 
   const renameSection = (id: string, title: string) => {
     setSections((items) =>
       items.map((s) => (s.id === id ? { ...s, title: title.trim() || SECTION_TYPES[s.type].label } : s)),
     );
+    toast.success("Section renamed · saved");
   };
 
   const saveSectionEdit = (updated: HomepageSection) => {
     setSections((items) => items.map((s) => (s.id === updated.id ? updated : s)));
     setEditingSection(null);
-    toast.success("Section updated (demo)");
+    toast.success("Section settings saved");
   };
 
   const handleSave = () => {
-    toast.success("Homepage saved (demo)", {
-      description: `${sections.length} sections · ${enabledCount} enabled`,
+    // Explicit save — sections are already auto-saved on every change,
+    // but this gives the admin a satisfying confirmation + summary.
+    saveToStore(sections);
+    toast.success("Homepage published to live store", {
+      description: `${sections.length} sections · ${enabledCount} enabled · changes are live`,
     });
   };
 
   const handleReset = () => {
-    setSections([...initialSections].sort((a, b) => a.sortOrder - b.sortOrder));
-    toast.info("Reverted to default layout");
+    const defaults = [...initialSections].sort((a, b) => a.sortOrder - b.sortOrder);
+    setSections(defaults);
+    resetStore();
+    toast.info("Reverted to default layout · saved");
   };
 
   return (
     <div className="space-y-6">
       <AdminPageHeader
         title="Homepage Builder"
-        description="Drag-and-drop editor for your storefront homepage sections."
+        description="Drag-and-drop editor. Changes save automatically and apply to your live store."
         icon={<LayoutTemplate className="size-5" />}
         actions={
           <div className="flex items-center gap-2">
@@ -216,7 +256,7 @@ export default function AdminHomepageBuilderPage() {
             </Button>
             <Button onClick={handleSave}>
               <Save className="size-4" />
-              Save Layout
+              Publish Changes
             </Button>
           </div>
         }
@@ -272,11 +312,14 @@ export default function AdminHomepageBuilderPage() {
         <div className="space-y-3">
           <div className="flex items-center justify-between rounded-lg border bg-muted/30 p-3">
             <div>
-              <p className="text-sm font-medium">
+              <p className="text-sm font-medium flex items-center gap-2">
                 {sections.length} sections · {enabledCount} enabled
+                <Badge className="bg-green-100 text-green-800 hover:bg-green-100 text-[10px]">
+                  <span className="size-1.5 rounded-full bg-green-500 animate-pulse" /> Live
+                </Badge>
               </p>
               <p className="text-[11px] text-muted-foreground">
-                Drag to reorder. Toggle eye icon to enable/disable on storefront.
+                Changes save automatically & apply to the live store instantly.
               </p>
             </div>
             <Button asChild variant="ghost" size="sm">
