@@ -71,7 +71,7 @@ export function SiteHeader() {
     <>
       {/* Announcement bar */}
       <div className="bg-primary text-primary-foreground text-xs sm:text-sm">
-        <div className="mx-auto max-w-7xl px-4 h-9 flex items-center justify-center overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 h-9 flex items-center justify-center overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={announcementIdx}
@@ -182,7 +182,7 @@ export function SiteHeader() {
 
         {/* Secondary nav row — desktop only */}
         <div className={cn("hidden lg:block border-t transition-all", transparent ? "border-transparent" : "border-border/60")}>
-          <div className="mx-auto max-w-7xl px-6 flex items-center justify-center gap-8 h-11">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 flex items-center justify-center gap-8 h-11">
             {navLinks.map((l) => (
               <Link
                 key={l.href}

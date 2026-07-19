@@ -2,9 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { Home, LayoutGrid, Heart, User, Menu } from "lucide-react";
-import { useUIStore } from "@/lib/stores";
+import { Home, LayoutGrid, Heart, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
@@ -14,13 +12,17 @@ const items = [
   { label: "Account", href: "/profile", icon: User },
 ];
 
-// Bottom navigation — visible only on homepage on mobile.
+// Bottom navigation — visible on key pages, mobile only.
+// The bar background spans full width (standard mobile pattern), but the
+// inner grid is constrained to the same max-width + padding as the header
+// so icons align with the header content above.
 export function BottomNav() {
   const pathname = usePathname();
-  const [hydrated, setHydrated] = useState(false);
-  useState(() => setHydrated(true));
-  // Show only on / homepage and on mobile (hidden on lg+)
-  const show = pathname === "/" || pathname === "/collections" || pathname === "/wishlist" || pathname === "/profile";
+  const show =
+    pathname === "/" ||
+    pathname === "/collections" ||
+    pathname === "/wishlist" ||
+    pathname === "/profile";
 
   if (!show) return null;
 
@@ -32,23 +34,26 @@ export function BottomNav() {
       )}
       aria-label="Bottom navigation"
     >
-      <div className="grid grid-cols-4 h-16">
-        {items.map(({ label, href, icon: Icon }) => {
-          const active = pathname === href;
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                "flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors",
-                active ? "text-primary" : "text-muted-foreground"
-              )}
-            >
-              <Icon className={cn("h-5 w-5", active && "fill-primary/15")} />
-              <span className="tracking-wide">{label}</span>
-            </Link>
-          );
-        })}
+      {/* Inner container matches the header's max-w-7xl + px-4 sm:px-6 */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="grid grid-cols-4 h-16">
+          {items.map(({ label, href, icon: Icon }) => {
+            const active = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  "flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition-colors",
+                  active ? "text-primary" : "text-muted-foreground"
+                )}
+              >
+                <Icon className={cn("h-5 w-5", active && "fill-primary/15")} />
+                <span className="tracking-wide">{label}</span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </nav>
   );
