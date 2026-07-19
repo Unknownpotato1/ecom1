@@ -10,6 +10,12 @@ import {
   AlignVerticalSpaceAround,
   RotateCcw,
   ShoppingBag,
+  Compass,
+  PanelBottom,
+  Shapes,
+  GalleryHorizontalEnd,
+  Wand2,
+  LayoutGrid,
 } from "lucide-react";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -252,6 +258,289 @@ export default function AdminThemePage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Header */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Compass className="size-4" />
+                Header
+              </CardTitle>
+              <CardDescription>Header layout and behavior.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Transparent on top</p>
+                  <p className="text-[11px] text-muted-foreground">Header is transparent at top of page, solid on scroll</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Sticky header</p>
+                  <p className="text-[11px] text-muted-foreground">Header stays visible while scrolling</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Show secondary nav row</p>
+                  <p className="text-[11px] text-muted-foreground">Desktop only — second row of category links</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <div className="grid gap-2">
+                <Label className="text-xs">Header style</Label>
+                <Select defaultValue="modern">
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="modern">Modern (centered logo)</SelectItem>
+                    <SelectItem value="classic">Classic (logo left)</SelectItem>
+                    <SelectItem value="split">Split (logo center, nav split)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Footer */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <PanelBottom className="size-4" />
+                Footer
+              </CardTitle>
+              <CardDescription>Footer layout and content.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid gap-2">
+                <Label className="text-xs">Footer style</Label>
+                <Select defaultValue="rich">
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="rich">Rich (4 columns + newsletter)</SelectItem>
+                    <SelectItem value="minimal">Minimal (single row)</SelectItem>
+                    <SelectItem value="expanded">Expanded (5 columns)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Show trust badges row</p>
+                  <p className="text-[11px] text-muted-foreground">Free shipping, returns, secure checkout icons</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Show payment icons</p>
+                  <p className="text-[11px] text-muted-foreground">VISA, Mastercard, UPI, RuPay, COD</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Show newsletter signup</p>
+                  <p className="text-[11px] text-muted-foreground">Email capture form in footer</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+            </CardContent>
+          </Card>
+
+          {/* Icons */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Shapes className="size-4" />
+                Icons
+              </CardTitle>
+              <CardDescription>Icon style and size.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid gap-2">
+                <Label className="text-xs">Icon set</Label>
+                <Select defaultValue="lucide">
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="lucide">Lucide (modern, outlined)</SelectItem>
+                    <SelectItem value="feather">Feather (minimal)</SelectItem>
+                    <SelectItem value="heroicons">Heroicons (clean)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label className="text-xs">Icon size</Label>
+                <Select defaultValue="medium">
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="small">Small (16px)</SelectItem>
+                    <SelectItem value="medium">Medium (20px)</SelectItem>
+                    <SelectItem value="large">Large (24px)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Hero Slider */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <GalleryHorizontalEnd className="size-4" />
+                Hero Slider
+              </CardTitle>
+              <CardDescription>Homepage carousel behavior.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Autoplay</p>
+                  <p className="text-[11px] text-muted-foreground">Automatically advance slides</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Fade transition</p>
+                  <p className="text-[11px] text-muted-foreground">Fade between slides instead of slide</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Show arrows</p>
+                  <p className="text-[11px] text-muted-foreground">Previous/next navigation arrows</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Show dots</p>
+                  <p className="text-[11px] text-muted-foreground">Pagination dots at bottom</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <div className="grid gap-2">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs">Autoplay speed (ms)</Label>
+                  <span className="text-xs font-mono text-muted-foreground">5000ms</span>
+                </div>
+                <Slider defaultValue={[5000]} min={3000} max={10000} step={500} />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Animations */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Wand2 className="size-4" />
+                Animations
+              </CardTitle>
+              <CardDescription>Motion and transition behavior.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Enable hover effects</p>
+                  <p className="text-[11px] text-muted-foreground">Scale, lift, and color transitions on hover</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Scroll-triggered animations</p>
+                  <p className="text-[11px] text-muted-foreground">Fade in elements as they enter viewport</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Page transitions</p>
+                  <p className="text-[11px] text-muted-foreground">Animate between route changes</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <label className="flex items-center justify-between rounded-md border bg-background p-3 cursor-pointer">
+                <div>
+                  <p className="text-sm font-medium leading-tight">Animated add-to-cart</p>
+                  <p className="text-[11px] text-muted-foreground">Fly-to-cart animation on add</p>
+                </div>
+                <input type="checkbox" defaultChecked className="size-4 accent-[var(--primary)]" />
+              </label>
+              <div className="grid gap-2">
+                <Label className="text-xs">Animation speed</Label>
+                <Select defaultValue="normal">
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="instant">Instant (no animation)</SelectItem>
+                    <SelectItem value="fast">Fast (200ms)</SelectItem>
+                    <SelectItem value="normal">Normal (400ms)</SelectItem>
+                    <SelectItem value="slow">Slow (700ms)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Layouts */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <LayoutGrid className="size-4" />
+                Layouts
+              </CardTitle>
+              <CardDescription>Page-level layout options.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid gap-2">
+                <Label className="text-xs">Product grid columns (desktop)</Label>
+                <Select defaultValue="4">
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="3">3 columns</SelectItem>
+                    <SelectItem value="4">4 columns</SelectItem>
+                    <SelectItem value="5">5 columns</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label className="text-xs">Product page layout</Label>
+                <Select defaultValue="split">
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="split">Split (image left, info right)</SelectItem>
+                    <SelectItem value="stacked">Stacked (image top, info below)</SelectItem>
+                    <SelectItem value="gallery">Gallery (full-width image)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label className="text-xs">Collection page layout</Label>
+                <Select defaultValue="sidebar">
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sidebar">Sidebar filters</SelectItem>
+                    <SelectItem value="topbar">Top filter bar</SelectItem>
+                    <SelectItem value="drawer">Drawer filters (mobile-style)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label className="text-xs">Cart style</Label>
+                <Select defaultValue="drawer">
+                  <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="drawer">Slide-out drawer</SelectItem>
+                    <SelectItem value="page">Dedicated cart page</SelectItem>
+                    <SelectItem value="modal">Modal popup</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Live preview */}
@@ -313,6 +602,7 @@ export default function AdminThemePage() {
                 style={{ borderRadius: `${theme.buttonRadius + 4}px` }}
               >
                 <div className="aspect-[4/3] bg-muted">
+                  { }
                   <img
                     src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80"
                     alt="Aurora Kundan Bridal Set"

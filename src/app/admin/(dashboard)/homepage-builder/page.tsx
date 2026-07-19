@@ -46,6 +46,7 @@ import {
   ShoppingBag,
   Layers,
   RotateCcw,
+  Settings2,
 } from "lucide-react";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -178,6 +179,12 @@ export default function AdminHomepageBuilderPage() {
     toast.success(`${SECTION_TYPES[type].label} added`);
   };
 
+  const renameSection = (id: string, title: string) => {
+    setSections((items) =>
+      items.map((s) => (s.id === id ? { ...s, title: title.trim() || SECTION_TYPES[s.type].label } : s)),
+    );
+  };
+
   const saveSectionEdit = (updated: HomepageSection) => {
     setSections((items) => items.map((s) => (s.id === updated.id ? updated : s)));
     setEditingSection(null);
@@ -298,6 +305,7 @@ export default function AdminHomepageBuilderPage() {
                     onDuplicate={duplicateSection}
                     onDelete={deleteSection}
                     onEdit={() => setEditingSection(section)}
+                    onRename={renameSection}
                   />
                 ))}
               </div>
@@ -346,6 +354,7 @@ function SortableSectionRow({
   onDuplicate,
   onDelete,
   onEdit,
+  onRename,
 }: {
   section: HomepageSection;
   index: number;
@@ -355,18 +364,26 @@ function SortableSectionRow({
   onDuplicate: (id: string) => void;
   onDelete: (id: string) => void;
   onEdit: () => void;
+  onRename: (id: string, title: string) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: section.id,
   });
   const meta = SECTION_TYPES[section.type];
   const Icon = meta.icon;
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [renameValue, setRenameValue] = useState(section.title ?? meta.label);
 
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
     zIndex: isDragging ? 50 : 1,
+  };
+
+  const commitRename = () => {
+    onRename(section.id, renameValue);
+    setIsRenaming(false);
   };
 
   return (
@@ -391,9 +408,33 @@ function SortableSectionRow({
 
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <p className="truncate text-sm font-medium">
-              {section.title ?? meta.label}
-            </p>
+            {isRenaming ? (
+              <Input
+                value={renameValue}
+                onChange={(e) => setRenameValue(e.target.value)}
+                onBlur={commitRename}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") commitRename();
+                  if (e.key === "Escape") {
+                    setRenameValue(section.title ?? meta.label);
+                    setIsRenaming(false);
+                  }
+                }}
+                className="h-7 text-sm py-0 px-2 max-w-[200px]"
+                autoFocus
+              />
+            ) : (
+              <button
+                onClick={() => {
+                  setRenameValue(section.title ?? meta.label);
+                  setIsRenaming(true);
+                }}
+                className="truncate text-sm font-medium hover:text-primary hover:underline text-left"
+                title="Click to rename"
+              >
+                {section.title ?? meta.label}
+              </button>
+            )}
             <Badge variant="outline" className="text-[10px]">
               {meta.label}
             </Badge>
@@ -433,8 +474,11 @@ function SortableSectionRow({
             onCheckedChange={() => onToggle(section.id)}
             aria-label="Toggle section visibility"
           />
-          <Button variant="ghost" size="icon" className="size-8" onClick={onEdit} aria-label="Edit">
-            <Pencil className="size-4" />
+          <Button variant="ghost" size="icon" className="size-8" onClick={() => setIsRenaming(true)} aria-label="Rename">
+            <Pencil className="size-3.5" />
+          </Button>
+          <Button variant="ghost" size="icon" className="size-8" onClick={onEdit} aria-label="Edit settings">
+            <Settings2 className="size-4" />
           </Button>
           <Button variant="ghost" size="icon" className="size-8" onClick={() => onDuplicate(section.id)} aria-label="Duplicate">
             <Copy className="size-4" />

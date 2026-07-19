@@ -15,6 +15,7 @@ import {
   Settings,
   ScrollText,
   DatabaseBackup,
+  Code2,
   type LucideIcon,
 } from "lucide-react";
 
@@ -119,6 +120,12 @@ export const adminNavGroups: AdminNavGroup[] = [
         href: "/admin/homepage-builder",
         icon: LayoutTemplate,
         description: "Drag-and-drop section editor",
+      },
+      {
+        label: "Custom Sections",
+        href: "/admin/custom-sections",
+        icon: Code2,
+        description: "Build HTML/CSS/JS sections",
       },
       {
         label: "Navigation",
