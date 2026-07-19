@@ -1,0 +1,253 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+  --font-mono: var(--font-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.5rem;
+  /* Ivory base */
+  --background: oklch(0.985 0.008 80);
+  --foreground: oklch(0.18 0.012 50);
+  --card: oklch(0.995 0.005 80);
+  --card-foreground: oklch(0.18 0.012 50);
+  --popover: oklch(0.995 0.005 80);
+  --popover-foreground: oklch(0.18 0.012 50);
+  /* Deep plum — luxury jewelry primary */
+  --primary: oklch(0.32 0.08 345);
+  --primary-foreground: oklch(0.985 0.005 80);
+  /* Warm cream */
+  --secondary: oklch(0.95 0.018 75);
+  --secondary-foreground: oklch(0.25 0.02 345);
+  --muted: oklch(0.94 0.012 75);
+  --muted-foreground: oklch(0.5 0.018 60);
+  /* Champagne gold accent */
+  --accent: oklch(0.78 0.11 75);
+  --accent-foreground: oklch(0.2 0.02 50);
+  --gold: oklch(0.72 0.13 75);
+  --gold-foreground: oklch(0.16 0.02 50);
+  --destructive: oklch(0.58 0.22 25);
+  --border: oklch(0.9 0.012 75);
+  --input: oklch(0.92 0.01 75);
+  --ring: oklch(0.6 0.1 345);
+  --chart-1: oklch(0.32 0.08 345);
+  --chart-2: oklch(0.72 0.13 75);
+  --chart-3: oklch(0.55 0.14 200);
+  --chart-4: oklch(0.7 0.15 50);
+  --chart-5: oklch(0.45 0.12 145);
+  --sidebar: oklch(0.97 0.008 80);
+  --sidebar-foreground: oklch(0.18 0.012 50);
+  --sidebar-primary: oklch(0.32 0.08 345);
+  --sidebar-primary-foreground: oklch(0.985 0.005 80);
+  --sidebar-accent: oklch(0.95 0.018 75);
+  --sidebar-accent-foreground: oklch(0.25 0.02 345);
+  --sidebar-border: oklch(0.9 0.012 75);
+  --sidebar-ring: oklch(0.6 0.1 345);
+}
+
+.dark {
+  --background: oklch(0.16 0.008 50);
+  --foreground: oklch(0.96 0.005 80);
+  --card: oklch(0.2 0.01 50);
+  --card-foreground: oklch(0.96 0.005 80);
+  --popover: oklch(0.2 0.01 50);
+  --popover-foreground: oklch(0.96 0.005 80);
+  --primary: oklch(0.72 0.13 75);
+  --primary-foreground: oklch(0.16 0.02 50);
+  --secondary: oklch(0.25 0.015 345);
+  --secondary-foreground: oklch(0.96 0.005 80);
+  --muted: oklch(0.25 0.015 345);
+  --muted-foreground: oklch(0.7 0.015 60);
+  --accent: oklch(0.6 0.1 345);
+  --accent-foreground: oklch(0.96 0.005 80);
+  --gold: oklch(0.7 0.13 75);
+  --gold-foreground: oklch(0.16 0.02 50);
+  --destructive: oklch(0.7 0.19 22);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.6 0.1 345);
+  --chart-1: oklch(0.72 0.13 75);
+  --chart-2: oklch(0.6 0.1 345);
+  --chart-3: oklch(0.55 0.14 200);
+  --chart-4: oklch(0.7 0.15 50);
+  --chart-5: oklch(0.45 0.12 145);
+  --sidebar: oklch(0.2 0.01 50);
+  --sidebar-foreground: oklch(0.96 0.005 80);
+  --sidebar-primary: oklch(0.72 0.13 75);
+  --sidebar-primary-foreground: oklch(0.16 0.02 50);
+  --sidebar-accent: oklch(0.25 0.015 345);
+  --sidebar-accent-foreground: oklch(0.96 0.005 80);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.6 0.1 345);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair), Georgia, serif;
+    letter-spacing: -0.015em;
+  }
+  /* Smooth scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+  /* Premium scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.85 0.02 75);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.7 0.05 75);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: var(--font-playfair), Georgia, serif;
+  }
+  .font-sans {
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+  /* Premium text gradient for headings */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, oklch(0.85 0.15 85) 0%, oklch(0.65 0.13 65) 50%, oklch(0.85 0.15 85) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  /* Subtle paper / grain texture */
+  .bg-paper {
+    background-color: var(--background);
+    background-image:
+      radial-gradient(at 20% 10%, oklch(0.96 0.025 75 / 0.5) 0px, transparent 50%),
+      radial-gradient(at 80% 90%, oklch(0.96 0.018 345 / 0.35) 0px, transparent 50%);
+  }
+  .bg-paper-dark {
+    background-color: var(--background);
+    background-image:
+      radial-gradient(at 20% 10%, oklch(0.3 0.02 345 / 0.4) 0px, transparent 50%),
+      radial-gradient(at 80% 90%, oklch(0.3 0.02 75 / 0.3) 0px, transparent 50%);
+  }
+  /* Shimmer animation for skeletons */
+  .shimmer {
+    background: linear-gradient(90deg,
+      oklch(0.92 0.01 75 / 0.5) 25%,
+      oklch(0.96 0.012 75 / 0.7) 50%,
+      oklch(0.92 0.01 75 / 0.5) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  /* Marquee */
+  .marquee {
+    animation: marquee 30s linear infinite;
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  /* Fade in up */
+  .fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  /* Premium card hover */
+  .card-hover {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px -12px oklch(0.3 0.05 345 / 0.18);
+  }
+  /* Glass effect */
+  .glass {
+    background: oklch(0.99 0.005 80 / 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .glass-dark {
+    background: oklch(0.16 0.008 50 / 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  /* No-scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  /* Hide number input arrows */
+  .no-spinner::-webkit-inner-spin-button,
+  .no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}

@@ -1,0 +1,259 @@
+// Prisma schema for Aurora & Co.
+// Maps 1:1 to the requested Firestore collections (see README.md).
+// In production, Firebase Firestore + Storage replace Prisma + SQLite.
+// The Prisma models are kept as a runnable local dev fallback so the
+// storefront works without external dependencies.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  mobile       String?
+  avatarUrl    String?
+  role         String    @default("customer") // "customer" | "admin"
+  passwordHash String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  addresses    Address[]
+  orders       Order[]
+  reviews      Review[]
+  wishlistItems WishlistItem[]
+}
+
+model Address {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName  String
+  mobile    String
+  line1     String
+  line2     String?
+  city      String
+  state     String
+  pincode   String
+  type      String  @default("home")
+  isDefault Boolean @default(false)
+}
+
+model WishlistItem {
+  id        String @id @default(cuid())
+  userId    String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id                String   @id @default(cuid())
+  slug              String   @unique
+  name              String
+  subtitle          String?
+  description       String
+  basePrice         Float
+  compareAtPrice    Float?
+  costPrice         Float?
+  sku               String   @unique
+  barcode           String?
+  category          String
+  tags              String   // JSON-encoded array
+  images            String   // JSON-encoded ImageAsset[]
+  videoUrl          String?
+  variants          String   // JSON-encoded ProductVariant[]
+  hasSizeVariants   Boolean  @default(false)
+  sizes             String   // JSON-encoded string[]
+  rating            Float    @default(0)
+  reviewCount       Int      @default(0)
+  inventory         Int      @default(0)
+  isPublished       Boolean  @default(true)
+  isFeatured        Boolean  @default(false)
+  isBestSeller      Boolean  @default(false)
+  isNewArrival      Boolean  @default(false)
+  isGiftHamper      Boolean  @default(false)
+  isLimitedOffer    Boolean  @default(false)
+  limitedOfferEndsAt DateTime?
+  scheduledPublishAt DateTime?
+  seo               String   // JSON-encoded object
+  relatedProductIds String?  // JSON-encoded array
+  frequentlyBoughtTogetherIds String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  reviews           Review[]
+  collectionProducts CollectionProduct[]
+}
+
+model Collection {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  bannerImage String   // JSON-encoded ImageAsset
+  thumbnail   String   // JSON-encoded ImageAsset
+  sortOrder   Int      @default(0)
+  isFeatured  Boolean  @default(false)
+  seo         String   // JSON
+  createdAt   DateTime @default(now())
+  products    CollectionProduct[]
+}
+
+model CollectionProduct {
+  id           String     @id @default(cuid())
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  productId    String
+  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sortOrder    Int        @default(0)
+  @@unique([collectionId, productId])
+}
+
+model Category {
+  id           String @id @default(cuid())
+  slug         String @unique
+  name         String
+  image        String // JSON
+  productCount Int    @default(0)
+  sortOrder    Int    @default(0)
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  authorName String
+  authorAvatar String?
+  rating     Int
+  title      String
+  body       String
+  images     String   // JSON-encoded ImageAsset[]
+  isVerified Boolean  @default(false)
+  helpful    Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model Coupon {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  type          String   // "percentage" | "flat"
+  value         Float
+  minOrderValue Float    @default(0)
+  maxDiscount   Float?
+  usageLimit    Int      @default(0)
+  usedCount     Int      @default(0)
+  expiresAt     DateTime?
+  isActive      Boolean  @default(true)
+  description   String
+  appliesTo     String   @default("all")
+  targetId      String?
+  createdAt     DateTime @default(now())
+}
+
+model Order {
+  id                String   @id @default(cuid())
+  orderNumber       String   @unique
+  userId            String?
+  user              User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  guestEmail        String
+  guestMobile       String
+  items             String   // JSON-encoded OrderItem[]
+  address           String   // JSON-encoded Address
+  subtotal          Float
+  discount          Float    @default(0)
+  shipping          Float    @default(0)
+  tax               Float    @default(0)
+  total             Float
+  paymentMethod     String   // "prepaid" | "cod" | "partial_cod"
+  paymentStatus     String   @default("pending")
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  couponCode        String?
+  giftNote          String?
+  status            String   @default("confirmed")
+  timeline          String   // JSON-encoded timeline events
+  estimatedDelivery DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model HeroSlide {
+  id             String  @id @default(cuid())
+  desktopImage   String
+  mobileImage    String
+  heading        String
+  subheading     String?
+  buttonText     String?
+  buttonUrl      String?
+  overlayOpacity Int     @default(35)
+  textAlignment  String  @default("left")
+  sortOrder      Int     @default(0)
+  enabled        Boolean @default(true)
+}
+
+model AnnouncementItem {
+  id        String  @id @default(cuid())
+  text      String
+  url       String?
+  enabled   Boolean @default(true)
+  sortOrder Int     @default(0)
+}
+
+model HomepageSection {
+  id        String  @id @default(cuid())
+  type      String
+  title     String?
+  enabled   Boolean @default(true)
+  config    String  // JSON
+  sortOrder Int     @default(0)
+}
+
+model Testimonial {
+  id             String   @id @default(cuid())
+  authorName     String
+  authorLocation String?
+  authorAvatar   String?
+  rating         Int
+  body           String
+  productId      String?
+  createdAt      DateTime @default(now())
+}
+
+model InstagramPost {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  caption   String
+  permalink String
+  likes     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model MediaAsset {
+  id         String   @id @default(cuid())
+  url        String
+  name       String
+  folder     String   @default("root")
+  size       Int      @default(0)
+  width      Int?
+  height     Int?
+  alt        String?
+  uploadedAt DateTime @default(now())
+}
+
+model ThemeSettings {
+  id            String  @id @default("singleton")
+  primaryColor  String  @default("#6B2D5C")
+  accentColor   String  @default("#B8956A")
+  fontHeading   String  @default("Playfair Display")
+  fontBody      String  @default("Inter")
+  buttonRadius  Float   @default(4)
+  containerWidth Int    @default(1280)
+  sectionSpacing Int    @default(64)
+}

@@ -1,0 +1,993 @@
+     1→// ============================================================================
+     2→// Aurora & Co. — Mock seed data layer.
+     3→// In production these are replaced by Firestore collections.
+     4→// See README.md for the equivalent Firestore schema mapping.
+     5→// ============================================================================
+     6→
+     7→import type {
+     8→  AnnouncementItem,
+     9→  Category,
+    10→  Collection,
+    11→  Coupon,
+    12→  HeroSlide,
+    13→  HomepageSection,
+    14→  InstagramPost,
+    15→  MultiBuyOffer,
+    16→  Product,
+    17→  ProductReview,
+    18→  Testimonial,
+    19→  ThemeSettings,
+    20→} from "./types";
+    21→
+    22→// Use Unsplash source URLs for high-quality jewelry imagery
+    23→const img = (id: string, w = 800) =>
+    24→  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+    25→
+    26→// ---------------------------------------------------------------------------
+    27→// Categories
+    28→// ---------------------------------------------------------------------------
+    29→export const categories: Category[] = [
+    30→  {
+    31→    id: "cat-necklaces",
+    32→    slug: "necklaces",
+    33→    name: "Necklaces",
+    34→    image: { id: "i1", url: img("photo-1599643478518-a784e5dc4c8f"), alt: "Necklaces" },
+    35→    productCount: 24,
+    36→    sortOrder: 1,
+    37→  },
+    38→  {
+    39→    id: "cat-earrings",
+    40→    slug: "earrings",
+    41→    name: "Earrings",
+    42→    image: { id: "i2", url: img("photo-1535632066927-ab7c11ab949d"), alt: "Earrings" },
+    43→    productCount: 32,
+    44→    sortOrder: 2,
+    45→  },
+    46→  {
+    47→    id: "cat-bracelets",
+    48→    slug: "bracelets",
+    49→    name: "Bracelets",
+    50→    image: { id: "i3", url: img("photo-1611652022419-a9419f74343d"), alt: "Bracelets" },
+    51→    productCount: 18,
+    52→    sortOrder: 3,
+    53→  },
+    54→  {
+    55→    id: "cat-rings",
+    56→    slug: "rings",
+    57→    name: "Rings",
+    58→    image: { id: "i4", url: img("photo-1605100804763-247f67b3557e"), alt: "Rings" },
+    59→    productCount: 20,
+    60→    sortOrder: 4,
+    61→  },
+    62→  {
+    63→    id: "cat-hampers",
+    64→    slug: "gift-hampers",
+    65→    name: "Gift Hampers",
+    66→    image: { id: "i5", url: img("photo-1549465220-1a8b9238cd48"), alt: "Gift Hampers" },
+    67→    productCount: 16,
+    68→    sortOrder: 5,
+    69→  },
+    70→  {
+    71→    id: "cat-mangalsutra",
+    72→    slug: "mangalsutra",
+    73→    name: "Mangalsutra",
+    74→    image: { id: "i6", url: img("photo-1573883431205-9b09b7b2b8a3"), alt: "Mangalsutra" },
+    75→    productCount: 12,
+    76→    sortOrder: 6,
+    77→  },
+    78→];
+    79→
+    80→// ---------------------------------------------------------------------------
+    81→// Collections
+    82→// ---------------------------------------------------------------------------
+    83→export const collections: Collection[] = [
+    84→  {
+    85→    id: "col-bridal",
+    86→    slug: "bridal-collection",
+    87→    name: "The Bridal Edit",
+    88→    description: "Heirloom-inspired statement pieces for the bride who deserves to shine. Handcrafted with kundan, polki, and pearl detailing.",
+    89→    bannerImage: { id: "b1", url: img("photo-1606800052052-a08af7148866", 1600), alt: "Bridal Collection" },
+    90→    thumbnail: { id: "t1", url: img("photo-1605100804763-247f67b3557e", 600), alt: "Bridal" },
+    91→    productIds: ["p-001", "p-002", "p-006", "p-007"],
+    92→    sortOrder: 1,
+    93→    isFeatured: true,
+    94→    seo: { title: "Bridal Jewelry Collection — Aurora & Co.", description: "Heirloom-inspired bridal jewelry." },
+    95→    createdAt: "2025-09-01T00:00:00.000Z",
+    96→  },
+    97→  {
+    98→    id: "col-festive",
+    99→    slug: "festive-glow",
+   100→    name: "Festive Glow",
+   101→    description: "Pieces that catch the light — and every glance. Perfect for Diwali, Karwa Chauth, and celebrations.",
+   102→    bannerImage: { id: "b2", url: img("photo-1617038220319-276b5e8a1f42", 1600), alt: "Festive Collection" },
+   103→    thumbnail: { id: "t2", url: img("photo-1573883431205-9b09b7b2b8a3", 600), alt: "Festive" },
+   104→    productIds: ["p-003", "p-004", "p-005", "p-008"],
+   105→    sortOrder: 2,
+   106→    isFeatured: true,
+   107→    seo: { title: "Festive Jewelry — Aurora & Co." },
+   108→    createdAt: "2025-09-15T00:00:00.000Z",
+   109→  },
+   110→  {
+   111→    id: "col-everyday",
+   112→    slug: "everyday-elegance",
+   113→    name: "Everyday Elegance",
+   114→    description: "Minimal, modern, made for daily wear. The kind of pieces you reach for without thinking.",
+   115→    bannerImage: { id: "b3", url: img("photo-1588444837495-c6cfeb53f32d", 1600), alt: "Everyday Collection" },
+   116→    thumbnail: { id: "t3", url: img("photo-1535632066927-ab7c11ab949d", 600), alt: "Everyday" },
+   117→    productIds: ["p-009", "p-010", "p-011", "p-012"],
+   118→    sortOrder: 3,
+   119→    isFeatured: true,
+   120→    seo: { title: "Everyday Jewelry — Aurora & Co." },
+   121→    createdAt: "2025-10-01T00:00:00.000Z",
+   122→  },
+   123→  {
+   124→    id: "col-hampers",
+   125→    slug: "curated-hampers",
+   126→    name: "Curated Hampers",
+   127→    description: "Thoughtful gifts, beautifully bundled. For weddings, festivals, and moments that matter.",
+   128→    bannerImage: { id: "b4", url: img("photo-1513885535751-8b9238bd3458", 1600), alt: "Hampers" },
+   129→    thumbnail: { id: "t4", url: img("photo-1549465220-1a8b9238cd48", 600), alt: "Hampers" },
+   130→    productIds: ["p-013", "p-014", "p-015", "p-016"],
+   131→    sortOrder: 4,
+   132→    isFeatured: true,
+   133→    seo: { title: "Gift Hampers — Aurora & Co." },
+   134→    createdAt: "2025-10-15T00:00:00.000Z",
+   135→  },
+   136→];
+   137→
+   138→// ---------------------------------------------------------------------------
+   139→// Reviews (shared)
+   140→// ---------------------------------------------------------------------------
+   141→const sharedReviews: ProductReview[] = [
+   142→  {
+   143→    id: "r1",
+   144→    productId: "shared",
+   145→    authorName: "Priya S.",
+   146→    rating: 5,
+   147→    title: "Stunning in person",
+   148→    body: "The photos don't do justice — the piece is heavier, shinier, and more premium than I expected. Got so many compliments at the wedding!",
+   149→    images: [{ id: "ri1", url: img("photo-1606800052052-a08af7148866", 400), alt: "Customer photo" }],
+   150→    isVerified: true,
+   151→    createdAt: "2026-06-10T10:00:00.000Z",
+   152→    helpful: 24,
+   153→  },
+   154→  {
+   155→    id: "r2",
+   156→    productId: "shared",
+   157→    authorName: "Ananya M.",
+   158→    rating: 5,
+   159→    title: "Perfect for gifting",
+   160→    body: "Bought this as a gift for my sister. The packaging is gorgeous — felt like opening a luxury boutique purchase. She absolutely loved it.",
+   161→    images: [],
+   162→    isVerified: true,
+   163→    createdAt: "2026-06-05T10:00:00.000Z",
+   164→    helpful: 12,
+   165→  },
+   166→  {
+   167→    id: "r3",
+   168→    productId: "shared",
+   169→    authorName: "Riya K.",
+   170→    rating: 4,
+   171→    title: "Beautiful but runs small",
+   172→    body: "Quality is excellent, just wish I'd sized up. Customer service helped me exchange hassle-free. Will buy again.",
+   173→    images: [{ id: "ri3", url: img("photo-1535632066927-ab7c11ab949d", 400), alt: "Customer photo" }],
+   174→    isVerified: true,
+   175→    createdAt: "2026-05-28T10:00:00.000Z",
+   176→    helpful: 8,
+   177→  },
+   178→];
+   179→
+   180→// ---------------------------------------------------------------------------
+   181→// Products
+   182→// ---------------------------------------------------------------------------
+   183→function makeProduct(p: Partial<Product> & Pick<Product, "id" | "slug" | "name" | "basePrice" | "category" | "images">): Product {
+   184→  const now = new Date().toISOString();
+   185→  return {
+   186→    subtitle: p.subtitle,
+   187→    description: p.description ?? "",
+   188→    highlights: p.highlights ?? [],
+   189→    specs: p.specs ?? [],
+   190→    compareAtPrice: p.compareAtPrice,
+   191→    costPrice: p.costPrice,
+   192→    sku: p.sku ?? `AUR-${p.id.toUpperCase()}`,
+   193→    barcode: p.barcode,
+   194→    collectionIds: p.collectionIds ?? [],
+   195→    tags: p.tags ?? [],
+   196→    videoUrl: p.videoUrl,
+   197→    variants: p.variants ?? [],
+   198→    hasSizeVariants: p.hasSizeVariants ?? false,
+   199→    sizes: p.sizes ?? [],
+   200→    rating: p.rating ?? 4.7,
+   201→    reviewCount: p.reviewCount ?? Math.floor(Math.random() * 80) + 12,
+   202→    reviews: p.reviews ?? sharedReviews.map((r) => ({ ...r, id: `${r.id}-${p.id}`, productId: p.id })),
+   203→    inventory: p.inventory ?? 25,
+   204→    isPublished: p.isPublished ?? true,
+   205→    isFeatured: p.isFeatured ?? false,
+   206→    isBestSeller: p.isBestSeller ?? false,
+   207→    isNewArrival: p.isNewArrival ?? false,
+   208→    isGiftHamper: p.isGiftHamper ?? false,
+   209→    isLimitedOffer: p.isLimitedOffer ?? false,
+   210→    limitedOfferEndsAt: p.limitedOfferEndsAt,
+   211→    scheduledPublishAt: p.scheduledPublishAt,
+   212→    createdAt: p.createdAt ?? now,
+   213→    updatedAt: p.updatedAt ?? now,
+   214→    seo: p.seo ?? {},
+   215→    relatedProductIds: p.relatedProductIds,
+   216→    frequentlyBoughtTogetherIds: p.frequentlyBoughtTogetherIds,
+   217→    ...p,
+   218→  } as Product;
+   219→}
+   220→
+   221→export const products: Product[] = [
+   222→  makeProduct({
+   223→    id: "p-001",
+   224→    slug: "aurora-kundan-bridal-set",
+   225→    name: "Aurora Kundan Bridal Set",
+   226→    subtitle: "Necklace + Earrings + Maang Tikka",
+   227→    description:
+   228→      "A breathtaking 3-piece bridal set inspired by Mughal craftsmanship. Each kundan stone is hand-set in a gold-tone alloy base, with delicate pearl drops that sway with every movement. Designed for the bride who wants to feel like royalty on her big day.",
+   229→    highlights: [
+   230→      "Hand-set Kundan stones",
+   231→      "Gold-tone alloy base",
+   232→      "Freshwater-look pearl drops",
+   233→      "Includes necklace, earrings, and maang tikka",
+   234→      "Adjustable dori for perfect fit",
+   235→    ],
+   236→    specs: [
+   237→      { label: "Material", value: "Brass alloy, gold-plated" },
+   238→      { label: "Stones", value: "Kundan + faux pearls" },
+   239→      { label: "Weight", value: "180g (set)" },
+   240→      { label: "Closure", value: "Adjustable hook" },
+   241→      { label: "Packaging", value: "Premium velvet box" },
+   242→    ],
+   243→    basePrice: 4999,
+   244→    compareAtPrice: 8999,
+   245→    costPrice: 2200,
+   246→    category: "necklaces",
+   247→    collectionIds: ["col-bridal"],
+   248→    tags: ["bridal", "kundan", "wedding", "statement"],
+   249→    images: [
+   250→      { id: "p1-1", url: img("photo-1606800052052-a08af7148866", 1200), alt: "Aurora Kundan Bridal Set — main" },
+   251→      { id: "p1-2", url: img("photo-1611652022419-a9419f74343d", 1200), alt: "Aurora Kundan Bridal Set — side" },
+   252→      { id: "p1-3", url: img("photo-1599643478518-a784e5dc4c8f", 1200), alt: "Aurora Kundan Bridal Set — detail" },
+   253→      { id: "p1-4", url: img("photo-1535632066927-ab7c11ab949d", 1200), alt: "Aurora Kundan Bridal Set — model" },
+   254→    ],
+   255→    variants: [
+   256→      { id: "v1-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P001-G", stock: 12 },
+   257→      { id: "v1-rose", name: "Color", value: "Rose Gold", swatch: "#B76E79", sku: "AUR-P001-R", stock: 8 },
+   258→      { id: "v1-silver", name: "Color", value: "Silver", swatch: "#C0C0C0", sku: "AUR-P001-S", stock: 5 },
+   259→    ],
+   260→    rating: 4.9,
+   261→    reviewCount: 142,
+   262→    isFeatured: true,
+   263→    isBestSeller: true,
+   264→    relatedProductIds: ["p-002", "p-006", "p-007"],
+   265→    frequentlyBoughtTogetherIds: ["p-006", "p-013"],
+   266→  }),
+   267→  makeProduct({
+   268→    id: "p-002",
+   269→    slug: "royal-polki-choker",
+   270→    name: "Royal Polki Choker",
+   271→    subtitle: "Uncut diamond-inspired choker",
+   272→    description:
+   273→      "Inspired by the uncut polki jewelry of Rajput royalty, this choker sits close to the neck for a regal, contemporary silhouette. Each stone is foil-backed to maximize brilliance, and the intricate meenakari work on the reverse is a hidden detail you'll love.",
+   274→    highlights: ["Foil-backed polki stones", "Reverse meenakari work", "Velvet backing for comfort", "Adjustable thread"],
+   275→    specs: [
+   276→      { label: "Material", value: "Brass, gold-plated" },
+   277→      { label: "Stones", value: "Polki-style glass" },
+   278→      { label: "Length", value: "32cm + extender" },
+   279→    ],
+   280→    basePrice: 3499,
+   281→    compareAtPrice: 5999,
+   282→    category: "necklaces",
+   283→    collectionIds: ["col-bridal", "col-festive"],
+   284→    tags: ["choker", "polki", "festive"],
+   285→    images: [
+   286→      { id: "p2-1", url: img("photo-1617038220319-276b5e8a1f42", 1200), alt: "Royal Polki Choker — main" },
+   287→      { id: "p2-2", url: img("photo-1599643478518-a784e5dc4c8f", 1200), alt: "Royal Polki Choker — detail" },
+   288→      { id: "p2-3", url: img("photo-1611652022419-a9419f74343d", 1200), alt: "Royal Polki Choker — model" },
+   289→    ],
+   290→    variants: [
+   291→      { id: "v2-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P002-G", stock: 15 },
+   292→      { id: "v2-emerald", name: "Color", value: "Emerald", swatch: "#0F7B5A", sku: "AUR-P002-E", stock: 6 },
+   293→    ],
+   294→    rating: 4.8,
+   295→    reviewCount: 98,
+   296→    isFeatured: true,
+   297→    isBestSeller: true,
+   298→    relatedProductIds: ["p-001", "p-006"],
+   299→  }),
+   300→  makeProduct({
+   301→    id: "p-003",
+   302→    slug: "noor-pearl-jhumkas",
+   303→    name: "Noor Pearl Jhumkas",
+   304→    subtitle: "Traditional jhumkas with pearl drops",
+   305→    description:
+   306→      "These timeless jhumkas combine the classic bell shape with cascading pearl drops that catch light beautifully. The perfect finish to a festive saree or anarkali.",
+   307→    highlights: ["Bell-shaped jhumka", "Cascading pearl drops", "Lightweight for all-day wear", "Push-back closure"],
+   308→    specs: [
+   309→      { label: "Material", value: "Brass, gold-plated" },
+   310→      { label: "Stones", value: "Pearl + faux ruby" },
+   311→      { label: "Drop length", value: "5cm" },
+   312→    ],
+   313→    basePrice: 1499,
+   314→    compareAtPrice: 2499,
+   315→    category: "earrings",
+   316→    collectionIds: ["col-festive"],
+   317→    tags: ["jhumkas", "pearl", "festive", "earrings"],
+   318→    images: [
+   319→      { id: "p3-1", url: img("photo-1535632066927-ab7c11ab949d", 1200), alt: "Noor Pearl Jhumkas — main" },
+   320→      { id: "p3-2", url: img("photo-1611652022419-a9419f74343d", 1200), alt: "Noor Pearl Jhumkas — detail" },
+   321→    ],
+   322→    variants: [
+   323→      { id: "v3-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P003-G", stock: 30 },
+   324→    ],
+   325→    rating: 4.7,
+   326→    reviewCount: 65,
+   327→    isFeatured: true,
+   328→    isNewArrival: true,
+   329→  }),
+   330→  makeProduct({
+   331→    id: "p-004",
+   332→    slug: "meena-chandbali",
+   333→    name: "Meena Chandbali",
+   334→    subtitle: "Crescent moon earrings with meenakari",
+   335→    description:
+   336→      "These crescent-shaped chandbalis are a love letter to old Hyderabad. Hand-painted meenakari in royal blue and ruby red sits beneath clear stones for a layered, dimensional look.",
+   337→    highlights: ["Hand-painted meenakari", "Crescent chandbali shape", "Layered stone work", "Lightweight"],
+   338→    specs: [
+   339→      { label: "Material", value: "Brass, gold-plated" },
+   340→      { label: "Stones", value: "Glass + meenakari" },
+   341→      { label: "Drop length", value: "6.5cm" },
+   342→    ],
+   343→    basePrice: 1899,
+   344→    compareAtPrice: 3299,
+   345→    category: "earrings",
+   346→    collectionIds: ["col-festive"],
+   347→    tags: ["chandbali", "meenakari", "festive"],
+   348→    images: [
+   349→      { id: "p4-1", url: img("photo-1588444837495-c6cfeb53f32d", 1200), alt: "Meena Chandbali — main" },
+   350→      { id: "p4-2", url: img("photo-1611652022419-a9419f74343d", 1200), alt: "Meena Chandbali — detail" },
+   351→    ],
+   352→    variants: [
+   353→      { id: "v4-gold", name: "Color", value: "Gold/Blue", swatch: "#1E3A8A", sku: "AUR-P004-GB", stock: 18 },
+   354→      { id: "v4-ruby", name: "Color", value: "Gold/Ruby", swatch: "#9B1B30", sku: "AUR-P004-GR", stock: 9 },
+   355→    ],
+   356→    rating: 4.8,
+   357→    reviewCount: 47,
+   358→    isNewArrival: true,
+   359→  }),
+   360→  makeProduct({
+   361→    id: "p-005",
+   362→    slug: "zoya-statement-ring",
+   363→    name: "Zoya Statement Ring",
+   364→    subtitle: "Adjustable cocktail ring",
+   365→    description:
+   366→      "A bold cocktail ring that demands attention. The oval centerpiece is surrounded by clear baguettes that catch light from every angle. Adjustable band fits most sizes.",
+   367→    highlights: ["Adjustable band", "Oval center stone", "Baguette halo", "Tarnish-resistant finish"],
+   368→    specs: [
+   369→      { label: "Material", value: "Brass, gold-plated" },
+   370→      { label: "Stones", value: "Cubic zirconia" },
+   371→      { label: "Size", value: "Adjustable" },
+   372→    ],
+   373→    basePrice: 899,
+   374→    compareAtPrice: 1499,
+   375→    category: "rings",
+   376→    collectionIds: ["col-festive", "col-everyday"],
+   377→    tags: ["ring", "cocktail", "statement"],
+   378→    images: [
+   379→      { id: "p5-1", url: img("photo-1605100804763-247f67b3557e", 1200), alt: "Zoya Statement Ring — main" },
+   380→      { id: "p5-2", url: img("photo-1606800052052-a08af7148866", 1200), alt: "Zoya Statement Ring — on hand" },
+   381→    ],
+   382→    variants: [
+   383→      { id: "v5-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P005-G", stock: 40 },
+   384→      { id: "v5-silver", name: "Color", value: "Silver", swatch: "#C0C0C0", sku: "AUR-P005-S", stock: 25 },
+   385→    ],
+   386→    rating: 4.6,
+   387→    reviewCount: 89,
+   388→    isBestSeller: true,
+   389→  }),
+   390→  makeProduct({
+   391→    id: "p-006",
+   392→    slug: "sita-maang-tikka",
+   393→    name: "Sita Maang Tikka",
+   394→    subtitle: "Bridal maang tikka with pearl chain",
+   395→    description:
+   396→      "The centerpiece of any bridal look. This maang tikka features a flat kundan center surrounded by pearl drops and a delicate chain that ends in a small pearl. Comfortable enough to wear all day.",
+   397→    highlights: ["Kundan center", "Pearl drop chain", "Comfortable backing", "Adjustable length"],
+   398→    specs: [
+   399→      { label: "Material", value: "Brass, gold-plated" },
+   400→      { label: "Stones", value: "Kundan + faux pearl" },
+   401→      { label: "Chain length", value: "18cm" },
+   402→    ],
+   403→    basePrice: 1199,
+   404→    compareAtPrice: 1999,
+   405→    category: "necklaces",
+   406→    collectionIds: ["col-bridal"],
+   407→    tags: ["maang tikka", "bridal", "wedding"],
+   408→    images: [
+   409→      { id: "p6-1", url: img("photo-1599643478518-a784e5dc4c8f", 1200), alt: "Sita Maang Tikka — main" },
+   410→      { id: "p6-2", url: img("photo-1606800052052-a08af7148866", 1200), alt: "Sita Maang Tikka — detail" },
+   411→    ],
+   412→    variants: [
+   413→      { id: "v6-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P006-G", stock: 22 },
+   414→    ],
+   415→    rating: 4.9,
+   416→    reviewCount: 53,
+   417→    isFeatured: true,
+   418→  }),
+   419→  makeProduct({
+   420→    id: "p-007",
+   421→    slug: "ratan-kada-bracelet",
+   422→    name: "Ratan Kada Bracelet",
+   423→    subtitle: "Pair of statement kadas",
+   424→    description:
+   425→      "A pair of broad kada bangles with intricate kundan and meenakari work. These are the kind of pieces that anchor an entire look — wear them solo or stack with thinner bangles.",
+   426→    highlights: ["Set of 2 kadas", "Broad statement design", "Meenakari + kundan work", "Hinge closure"],
+   427→    specs: [
+   428→      { label: "Material", value: "Brass, gold-plated" },
+   429→      { label: "Stones", value: "Kundan + meenakari" },
+   430→      { label: "Diameter", value: "2.4 inches" },
+   431→    ],
+   432→    basePrice: 2499,
+   433→    compareAtPrice: 4499,
+   434→    category: "bracelets",
+   435→    collectionIds: ["col-bridal"],
+   436→    tags: ["kada", "bangle", "bridal"],
+   437→    images: [
+   438→      { id: "p7-1", url: img("photo-1611652022419-a9419f74343d", 1200), alt: "Ratan Kada Bracelet — main" },
+   439→      { id: "p7-2", url: img("photo-1535632066927-ab7c11ab949d", 1200), alt: "Ratan Kada Bracelet — pair" },
+   440→    ],
+   441→    variants: [
+   442→      { id: "v7-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P007-G", stock: 14 },
+   443→    ],
+   444→    rating: 4.7,
+   445→    reviewCount: 38,
+   446→  }),
+   447→  makeProduct({
+   448→    id: "p-008",
+   449→    slug: "sona-stack-bangles",
+   450→    name: "Sona Stack Bangles",
+   451→    subtitle: "Set of 6 thin bangles",
+   452→    description:
+   453→      "A stack of six thin gold-tone bangles with delicate stone accents. Perfect for everyday wear or for layering with statement pieces. Comes as a set of 6.",
+   454→    highlights: ["Set of 6 bangles", "Delicate stone accents", "Stackable design", "Everyday comfort"],
+   455→    specs: [
+   456→      { label: "Material", value: "Brass, gold-plated" },
+   457→      { label: "Stones", value: "Cubic zirconia" },
+   458→      { label: "Diameter", value: "2.2 inches" },
+   459→    ],
+   460→    basePrice: 1799,
+   461→    compareAtPrice: 2999,
+   462→    category: "bracelets",
+   463→    collectionIds: ["col-festive", "col-everyday"],
+   464→    tags: ["bangles", "stack", "everyday"],
+   465→    images: [
+   466→      { id: "p8-1", url: img("photo-1611652022419-a9419f74343d", 1200), alt: "Sona Stack Bangles — main" },
+   467→      { id: "p8-2", url: img("photo-1535632066927-ab7c11ab949d", 1200), alt: "Sona Stack Bangles — stack" },
+   468→    ],
+   469→    variants: [
+   470→      { id: "v8-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P008-G", stock: 28 },
+   471→    ],
+   472→    rating: 4.6,
+   473→    reviewCount: 72,
+   474→    isNewArrival: true,
+   475→  }),
+   476→  makeProduct({
+   477→    id: "p-009",
+   478→    slug: "minimal-line-bracelet",
+   479→    name: "Minimal Line Bracelet",
+   480→    subtitle: "Everyday gold-tone chain bracelet",
+   481→    description:
+   482→      "A delicate chain bracelet with a tiny pearl drop. Goes with everything from a kurta to a t-shirt. Adjustable length for the perfect fit.",
+   483→    highlights: ["Delicate chain", "Pearl drop", "Adjustable length", "Tarnish-resistant"],
+   484→    specs: [
+   485→      { label: "Material", value: "Stainless steel, gold-plated" },
+   486→      { label: "Length", value: "16cm + 4cm extender" },
+   487→    ],
+   488→    basePrice: 699,
+   489→    compareAtPrice: 1299,
+   490→    category: "bracelets",
+   491→    collectionIds: ["col-everyday"],
+   492→    tags: ["minimal", "everyday", "bracelet"],
+   493→    images: [
+   494→      { id: "p9-1", url: img("photo-1588444837495-c6cfeb53f32d", 1200), alt: "Minimal Line Bracelet — main" },
+   495→      { id: "p9-2", url: img("photo-1535632066927-ab7c11ab949d", 1200), alt: "Minimal Line Bracelet — on wrist" },
+   496→    ],
+   497→    variants: [
+   498→      { id: "v9-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P009-G", stock: 50 },
+   499→    ],
+   500→    rating: 4.5,
+   501→    reviewCount: 124,
+   502→    isBestSeller: true,
+   503→  }),
+   504→  makeProduct({
+   505→    id: "p-010",
+   506→    slug: "everyday-stud-set",
+   507→    name: "Everyday Stud Set",
+   508→    subtitle: "Set of 4 minimalist studs",
+   509→    description:
+   510→      "Four pairs of dainty studs in one set — pearl, clear stone, tiny hoop, and gold ball. The perfect rotation for everyday office wear.",
+   511→    highlights: ["4 pairs included", "Hypoallergenic posts", "Everyday rotation", "Compact storage box"],
+   512→    specs: [
+   513→      { label: "Material", value: "Stainless steel, gold-plated" },
+   514→      { label: "Back", value: "Push-back, hypoallergenic" },
+   515→    ],
+   516→    basePrice: 799,
+   517→    compareAtPrice: 1499,
+   518→    category: "earrings",
+   519→    collectionIds: ["col-everyday"],
+   520→    tags: ["studs", "minimal", "everyday", "set"],
+   521→    images: [
+   522→      { id: "p10-1", url: img("photo-1535632066927-ab7c11ab949d", 1200), alt: "Everyday Stud Set — main" },
+   523→      { id: "p10-2", url: img("photo-1611652022419-a9419f74343d", 1200), alt: "Everyday Stud Set — set" },
+   524→    ],
+   525→    variants: [
+   526→      { id: "v10-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P010-G", stock: 60 },
+   527→    ],
+   528→    rating: 4.7,
+   529→    reviewCount: 156,
+   530→    isBestSeller: true,
+   531→    isNewArrival: true,
+   532→  }),
+   533→  makeProduct({
+   534→    id: "p-011",
+   535→    slug: "delicate-pendant-necklace",
+   536→    name: "Delicate Pendant Necklace",
+   537→    subtitle: "Tiny evil-eye pendant",
+   538→    description:
+   539→      "A barely-there chain with a tiny evil-eye pendant. The kind of necklace you put on and forget about — until the compliments start.",
+   540→    highlights: ["Dainty chain", "Tiny evil-eye pendant", "Adjustable length", "Tarnish-resistant"],
+   541→    specs: [
+   542→      { label: "Material", value: "Stainless steel, gold-plated" },
+   543→      { label: "Length", value: "40cm + 5cm extender" },
+   544→    ],
+   545→    basePrice: 649,
+   546→    compareAtPrice: 1199,
+   547→    category: "necklaces",
+   548→    collectionIds: ["col-everyday"],
+   549→    tags: ["pendant", "minimal", "everyday"],
+   550→    images: [
+   551→      { id: "p11-1", url: img("photo-1599643478518-a784e5dc4c8f", 1200), alt: "Delicate Pendant Necklace — main" },
+   552→      { id: "p11-2", url: img("photo-1606800052052-a08af7148866", 1200), alt: "Delicate Pendant Necklace — on neck" },
+   553→    ],
+   554→    variants: [
+   555→      { id: "v11-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P011-G", stock: 45 },
+   556→      { id: "v11-silver", name: "Color", value: "Silver", swatch: "#C0C0C0", sku: "AUR-P011-S", stock: 35 },
+   557→    ],
+   558→    rating: 4.6,
+   559→    reviewCount: 88,
+   560→  }),
+   561→  makeProduct({
+   562→    id: "p-012",
+   563→    slug: "twisted-hoop-earrings",
+   564→    name: "Twisted Hoop Earrings",
+   565→    subtitle: "Textured medium hoops",
+   566→    description:
+   567→      "Medium-sized hoops with a twisted rope texture. Polished but not flashy — the kind of earring that becomes your signature.",
+   568→    highlights: ["Twisted texture", "Medium 3cm diameter", "Hinged closure", "Lightweight"],
+   569→    specs: [
+   570→      { label: "Material", value: "Stainless steel, gold-plated" },
+   571→      { label: "Diameter", value: "3cm" },
+   572→    ],
+   573→    basePrice: 599,
+   574→    compareAtPrice: 999,
+   575→    category: "earrings",
+   576→    collectionIds: ["col-everyday"],
+   577→    tags: ["hoops", "everyday", "minimal"],
+   578→    images: [
+   579→      { id: "p12-1", url: img("photo-1588444837495-c6cfeb53f32d", 1200), alt: "Twisted Hoop Earrings — main" },
+   580→      { id: "p12-2", url: img("photo-1535632066927-ab7c11ab949d", 1200), alt: "Twisted Hoop Earrings — on ear" },
+   581→    ],
+   582→    variants: [
+   583→      { id: "v12-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P012-G", stock: 55 },
+   584→      { id: "v12-silver", name: "Color", value: "Silver", swatch: "#C0C0C0", sku: "AUR-P012-S", stock: 40 },
+   585→    ],
+   586→    rating: 4.5,
+   587→    reviewCount: 67,
+   588→    isNewArrival: true,
+   589→  }),
+   590→  // Gift Hampers
+   591→  makeProduct({
+   592→    id: "p-013",
+   593→    slug: "festive-joy-hamper",
+   594→    name: "Festive Joy Hamper",
+   595→    subtitle: "Necklace + Earrings + Diya + Sweets",
+   596→    description:
+   597→      "A thoughtfully curated hamper for Diwali and festive gifting. Includes a gold-tone necklace set, a hand-painted diya, artisanal kaju katli, and a personalized note — all packed in a premium reusable box.",
+   598→    highlights: ["Necklace + earring set included", "Hand-painted diya", "500g kaju katli", "Personalized gift note", "Premium reusable box"],
+   599→    specs: [
+   600→      { label: "Hamper contents", value: "Jewelry set, diya, sweets, note" },
+   601→      { label: "Box size", value: "30 × 20 × 8 cm" },
+   602→      { label: "Weight", value: "1.2kg" },
+   603→    ],
+   604→    basePrice: 2999,
+   605→    compareAtPrice: 4999,
+   606→    category: "gift-hampers",
+   607→    collectionIds: ["col-hampers"],
+   608→    tags: ["hamper", "festive", "diwali", "gift"],
+   609→    images: [
+   610→      { id: "p13-1", url: img("photo-1549465220-1a8b9238cd48", 1200), alt: "Festive Joy Hamper — main" },
+   611→      { id: "p13-2", url: img("photo-1513885535751-8b9238bd3458", 1200), alt: "Festive Joy Hamper — contents" },
+   612→      { id: "p13-3", url: img("photo-1606800052052-a08af7148866", 1200), alt: "Festive Joy Hamper — jewelry" },
+   613→    ],
+   614→    variants: [
+   615→      { id: "v13-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P013-G", stock: 18 },
+   616→    ],
+   617→    rating: 4.9,
+   618→    reviewCount: 41,
+   619→    isGiftHamper: true,
+   620→    isFeatured: true,
+   621→    isBestSeller: true,
+   622→  }),
+   623→  makeProduct({
+   624→    id: "p-014",
+   625→    slug: "bridal-gift-hamper",
+   626→    name: "Bridal Gift Hamper",
+   627→    subtitle: "Premium jewelry hamper for the bride",
+   628→    description:
+   629→      "The ultimate bridal gift — a curated hamper with a kundan set, bangles, maang tikka, scented candle, and a silk pouch. Designed for sisters, friends, and family gifting the bride.",
+   630→    highlights: ["3-piece jewelry set", "Pair of kadas", "Scented soy candle", "Silk pouch", "Premium gift box"],
+   631→    specs: [
+   632→      { label: "Hamper contents", value: "Jewelry set, kada, candle, pouch" },
+   633→      { label: "Box size", value: "35 × 25 × 10 cm" },
+   634→    ],
+   635→    basePrice: 5999,
+   636→    compareAtPrice: 9999,
+   637→    category: "gift-hampers",
+   638→    collectionIds: ["col-hampers"],
+   639→    tags: ["hamper", "bridal", "wedding-gift", "premium"],
+   640→    images: [
+   641→      { id: "p14-1", url: img("photo-1513885535751-8b9238bd3458", 1200), alt: "Bridal Gift Hamper — main" },
+   642→      { id: "p14-2", url: img("photo-1549465220-1a8b9238cd48", 1200), alt: "Bridal Gift Hamper — contents" },
+   643→    ],
+   644→    variants: [
+   645→      { id: "v14-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P014-G", stock: 8 },
+   646→    ],
+   647→    rating: 5.0,
+   648→    reviewCount: 22,
+   649→    isGiftHamper: true,
+   650→    isFeatured: true,
+   651→  }),
+   652→  makeProduct({
+   653→    id: "p-015",
+   654→    slug: "corporate-gift-hamper",
+   655→    name: "Corporate Gift Hamper",
+   656→    subtitle: "Elegant office gifting — set of 1",
+   657→    description:
+   658→      "Sleek, professional, and universally appreciated. Includes a minimalist bracelet, premium notebook, metal pen, and artisanal coffee — packed in a matte black box with a custom logo option (bulk orders).",
+   659→    highlights: ["Minimalist bracelet", "A5 hardcover notebook", "Metal ball-pen", "100g artisanal coffee", "Custom logo option (bulk)"],
+   660→    specs: [
+   661→      { label: "Hamper contents", value: "Bracelet, notebook, pen, coffee" },
+   662→      { label: "Box size", value: "28 × 22 × 6 cm" },
+   663→    ],
+   664→    basePrice: 1799,
+   665→    compareAtPrice: 2799,
+   666→    category: "gift-hampers",
+   667→    collectionIds: ["col-hampers"],
+   668→    tags: ["hamper", "corporate", "gifting", "bulk"],
+   669→    images: [
+   670→      { id: "p15-1", url: img("photo-1513885535751-8b9238bd3458", 1200), alt: "Corporate Gift Hamper — main" },
+   671→      { id: "p15-2", url: img("photo-1549465220-1a8b9238cd48", 1200), alt: "Corporate Gift Hamper — contents" },
+   672→    ],
+   673→    variants: [
+   674→      { id: "v15-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P015-G", stock: 30 },
+   675→      { id: "v15-silver", name: "Color", value: "Silver", swatch: "#C0C0C0", sku: "AUR-P015-S", stock: 25 },
+   676→    ],
+   677→    rating: 4.7,
+   678→    reviewCount: 34,
+   679→    isGiftHamper: true,
+   680→    isNewArrival: true,
+   681→  }),
+   682→  makeProduct({
+   683→    id: "p-016",
+   684→    slug: "rakhi-special-hamper",
+   685→    name: "Rakhi Special Hamper",
+   686→    subtitle: "Rakhi + sweets + bracelet",
+   687→    description:
+   688→      "A heartfelt Raksha Bandhan hamper — designer rakhi, kaju roll 250g, a minimalist bracelet for the sister, and a personalized note. Ships with roli-chawal pouch.",
+   689→    highlights: ["Designer rakhi", "250g kaju roll", "Minimalist bracelet", "Roli-chawal pouch", "Personalized note"],
+   690→    specs: [
+   691→      { label: "Hamper contents", value: "Rakhi, sweets, bracelet, roli" },
+   692→      { label: "Box size", value: "25 × 18 × 6 cm" },
+   693→    ],
+   694→    basePrice: 1299,
+   695→    compareAtPrice: 1999,
+   696→    category: "gift-hampers",
+   697→    collectionIds: ["col-hampers"],
+   698→    tags: ["hamper", "rakhi", "festival", "gift"],
+   699→    images: [
+   700→      { id: "p16-1", url: img("photo-1549465220-1a8b9238cd48", 1200), alt: "Rakhi Special Hamper — main" },
+   701→      { id: "p16-2", url: img("photo-1513885535751-8b9238bd3458", 1200), alt: "Rakhi Special Hamper — contents" },
+   702→    ],
+   703→    variants: [
+   704→      { id: "v16-gold", name: "Color", value: "Gold", swatch: "#C9A35B", sku: "AUR-P016-G", stock: 40 },
+   705→    ],
+   706→    rating: 4.8,
+   707→    reviewCount: 56,
+   708→    isGiftHamper: true,
+   709→    isLimitedOffer: true,
+   710→    limitedOfferEndsAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+   711→  }),
+   712→];
+   713→
+   714→// ---------------------------------------------------------------------------
+   715→// Hero slider
+   716→// ---------------------------------------------------------------------------
+   717→export const heroSlides: HeroSlide[] = [
+   718→  {
+   719→    id: "h1",
+   720→    desktopImage: img("photo-1606800052052-a08af7148866", 1920),
+   721→    mobileImage: img("photo-1606800052052-a08af7148866", 800),
+   722→    heading: "The Bridal Edit",
+   723→    subheading: "Heirloom-inspired jewelry, handcrafted for the modern bride.",
+   724→    buttonText: "Shop Bridal",
+   725→    buttonUrl: "/collections/bridal-collection",
+   726→    overlayOpacity: 35,
+   727→    textAlignment: "left",
+   728→    sortOrder: 1,
+   729→    enabled: true,
+   730→  },
+   731→  {
+   732→    id: "h2",
+   733→    desktopImage: img("photo-1617038220319-276b5e8a1f42", 1920),
+   734→    mobileImage: img("photo-1617038220319-276b5e8a1f42", 800),
+   735→    heading: "Festive Glow",
+   736→    subheading: "Pieces that catch every light — and every glance.",
+   737→    buttonText: "Discover Festive",
+   738→    buttonUrl: "/collections/festive-glow",
+   739→    overlayOpacity: 40,
+   740→    textAlignment: "center",
+   741→    sortOrder: 2,
+   742→    enabled: true,
+   743→  },
+   744→  {
+   745→    id: "h3",
+   746→    desktopImage: img("photo-1513885535751-8b9238bd3458", 1920),
+   747→    mobileImage: img("photo-1513885535751-8b9238bd3458", 800),
+   748→    heading: "Curated Hampers",
+   749→    subheading: "Thoughtful gifts, beautifully bundled. For every occasion.",
+   750→    buttonText: "Shop Hampers",
+   751→    buttonUrl: "/collections/curated-hampers",
+   752→    overlayOpacity: 35,
+   753→    textAlignment: "right",
+   754→    sortOrder: 3,
+   755→    enabled: true,
+   756→  },
+   757→];
+   758→
+   759→// ---------------------------------------------------------------------------
+   760→// Announcement bar
+   761→// ---------------------------------------------------------------------------
+   762→export const announcements: AnnouncementItem[] = [
+   763→  { id: "a1", text: "✦ Free shipping on all prepaid orders above ₹999", url: "/shipping-policy", enabled: true, sortOrder: 1 },
+   764→  { id: "a2", text: "✦ Use code AURORA15 for 15% off on prepaid orders", url: "/checkout", enabled: true, sortOrder: 2 },
+   765→  { id: "a3", text: "✦ COD available across India • 7-day hassle-free returns", url: "/refund-policy", enabled: true, sortOrder: 3 },
+   766→  { id: "a4", text: "✦ New arrivals every week — shop the latest drops", url: "/collections", enabled: true, sortOrder: 4 },
+   767→];
+   768→
+   769→// ---------------------------------------------------------------------------
+   770→// Testimonials
+   771→// ---------------------------------------------------------------------------
+   772→export const testimonials: Testimonial[] = [
+   773→  {
+   774→    id: "t1",
+   775→    authorName: "Priya Sharma",
+   776→    authorLocation: "Mumbai",
+   777→    rating: 5,
+   778→    body: "The bridal set was even more beautiful in person. Got endless compliments at my wedding. The packaging itself felt like a luxury experience.",
+   779→    productId: "p-001",
+   780→    createdAt: "2026-06-15T10:00:00.000Z",
+   781→  },
+   782→  {
+   783→    id: "t2",
+   784→    authorName: "Ananya Mehta",
+   785→    authorLocation: "Bengaluru",
+   786→    rating: 5,
+   787→    body: "Ordered the Festive Joy Hamper for my mother — she was thrilled. Quality of jewelry + sweets was top notch. Will be back for more.",
+   788→    productId: "p-013",
+   789→    createdAt: "2026-06-12T10:00:00.000Z",
+   790→  },
+   791→  {
+   792→    id: "t3",
+   793→    authorName: "Riya Kapoor",
+   794→    authorLocation: "Delhi",
+   795→    rating: 5,
+   796→    body: "I've ordered 4 times now and the quality is consistently excellent. The minimal pieces are perfect for everyday office wear.",
+   797→    productId: "p-011",
+   798→    createdAt: "2026-06-08T10:00:00.000Z",
+   799→  },
+   800→  {
+   801→    id: "t4",
+   802→    authorName: "Sneha Reddy",
+   803→    authorLocation: "Hyderabad",
+   804→    rating: 5,
+   805→    body: "Customer service was so helpful when I needed to exchange a size. Quick response, no fuss. This is how online jewelry shopping should be.",
+   806→    productId: "p-007",
+   807→    createdAt: "2026-06-03T10:00:00.000Z",
+   808→  },
+   809→  {
+   810→    id: "t5",
+   811→    authorName: "Kavya Nair",
+   812→    authorLocation: "Kochi",
+   813→    rating: 5,
+   814→    body: "Gifted the corporate hampers to my team — everyone loved them. Premium quality and the customization option was a great touch.",
+   815→    productId: "p-015",
+   816→    createdAt: "2026-05-28T10:00:00.000Z",
+   817→  },
+   818→  {
+   819→    id: "t6",
+   820→    authorName: "Meera Iyer",
+   821→    authorLocation: "Pune",
+   822→    rating: 5,
+   823→    body: "The polki choker is stunning. Wear it with everything — sarees, kurtis, even a plain black dress. Versatile and beautiful.",
+   824→    productId: "p-002",
+   825→    createdAt: "2026-05-20T10:00:00.000Z",
+   826→  },
+   827→];
+   828→
+   829→// ---------------------------------------------------------------------------
+   830→// Instagram gallery
+   831→// ---------------------------------------------------------------------------
+   832→export const instagramPosts: InstagramPost[] = [
+   833→  { id: "ig1", imageUrl: img("photo-1606800052052-a08af7148866", 600), caption: "Bridal season is here ✨", permalink: "https://instagram.com", likes: 1240 },
+   834→  { id: "ig2", imageUrl: img("photo-1617038220319-276b5e8a1f42", 600), caption: "Polki love 💛", permalink: "https://instagram.com", likes: 980 },
+   835→  { id: "ig3", imageUrl: img("photo-1535632066927-ab7c11ab949d", 600), caption: "Everyday studs for everyday beauty", permalink: "https://instagram.com", likes: 765 },
+   836→  { id: "ig4", imageUrl: img("photo-1549465220-1a8b9238cd48", 600), caption: "Gift hampers that wow 🎁", permalink: "https://instagram.com", likes: 1520 },
+   837→  { id: "ig5", imageUrl: img("photo-1611652022419-a9419f74343d", 600), caption: "Stack game strong", permalink: "https://instagram.com", likes: 642 },
+   838→  { id: "ig6", imageUrl: img("photo-1588444837495-c6cfeb53f32d", 600), caption: "Minimal Mondays", permalink: "https://instagram.com", likes: 890 },
+   839→];
+   840→
+   841→// ---------------------------------------------------------------------------
+   842→// Coupons
+   843→// ---------------------------------------------------------------------------
+   844→export const coupons: Coupon[] = [
+   845→  {
+   846→    id: "c1",
+   847→    code: "AURORA15",
+   848→    type: "percentage",
+   849→    value: 15,
+   850→    minOrderValue: 999,
+   851→    maxDiscount: 1500,
+   852→    usageLimit: 1000,
+   853→    usedCount: 142,
+   854→    isActive: true,
+   855→    description: "15% off on all prepaid orders. Max discount ₹1500.",
+   856→    appliesTo: "all",
+   857→  },
+   858→  {
+   859→    id: "c2",
+   860→    code: "FESTIVE10",
+   861→    type: "percentage",
+   862→    value: 10,
+   863→    minOrderValue: 1499,
+   864→    maxDiscount: 1000,
+   865→    usageLimit: 500,
+   866→    usedCount: 67,
+   867→    isActive: true,
+   868→    description: "10% off on festive collection orders above ₹1499.",
+   869→    appliesTo: "collection",
+   870→    targetId: "col-festive",
+   871→  },
+   872→  {
+   873→    id: "c3",
+   874→    code: "FLAT200",
+   875→    type: "flat",
+   876→    value: 200,
+   877→    minOrderValue: 1999,
+   878→    usageLimit: 1000,
+   879→    usedCount: 89,
+   880→    isActive: true,
+   881→    description: "Flat ₹200 off on orders above ₹1999.",
+   882→    appliesTo: "all",
+   883→  },
+   884→  {
+   885→    id: "c4",
+   886→    code: "WELCOME100",
+   887→    type: "flat",
+   888→    value: 100,
+   889→    minOrderValue: 499,
+   890→    usageLimit: 10000,
+   891→    usedCount: 245,
+   892→    isActive: true,
+   893→    description: "Flat ₹100 off on your first order above ₹499.",
+   894→    appliesTo: "all",
+   895→  },
+   896→];
+   897→
+   898→// ---------------------------------------------------------------------------
+   899→// Multi-buy offers
+   900→// ---------------------------------------------------------------------------
+   901→export const multiBuyOffers: MultiBuyOffer[] = [
+   902→  { id: "mb1", minQty: 2, discountPercent: 10, label: "Buy 2, get 10% extra off" },
+   903→  { id: "mb2", minQty: 3, discountPercent: 15, label: "Buy 3, get 15% extra off" },
+   904→];
+   905→
+   906→// ---------------------------------------------------------------------------
+   907→// Homepage sections (modular, drag-and-drop reorderable in admin)
+   908→// ---------------------------------------------------------------------------
+   909→export const homepageSections: HomepageSection[] = [
+   910→  { id: "s1", type: "announcement_bar", enabled: true, sortOrder: 1, config: {} },
+   911→  { id: "s2", type: "hero_slider", enabled: true, sortOrder: 2, config: { autoplay: true, speed: 5000, fade: true } },
+   912→  { id: "s3", type: "featured_collections", enabled: true, sortOrder: 3, config: { title: "Featured Collections" } },
+   913→  { id: "s4", type: "shop_by_category", enabled: true, sortOrder: 4, config: { title: "Shop by Category" } },
+   914→  { id: "s5", type: "image_with_text", enabled: true, sortOrder: 5, config: {
+   915→    image: img("photo-1599643478518-a784e5dc4c8f", 1200),
+   916→    heading: "Crafted by hand. Made to last.",
+   917→    body: "Every piece is hand-set, hand-polished, and inspected by our master karigars before it reaches you. No mass production. No shortcuts.",
+   918→    buttonText: "Our Craft",
+   919→    buttonUrl: "/about",
+   920→    alignment: "left",
+   921→  } },
+   922→  { id: "s6", type: "best_sellers", enabled: true, sortOrder: 6, config: { title: "Best Sellers", limit: 8 } },
+   923→  { id: "s7", type: "limited_offers", enabled: true, sortOrder: 7, config: { title: "Limited Time Offers" } },
+   924→  { id: "s8", type: "featured_products", enabled: true, sortOrder: 8, config: { title: "Featured Products", limit: 8 } },
+   925→  { id: "s9", type: "gift_hampers", enabled: true, sortOrder: 9, config: { title: "Gift Hampers" } },
+   926→  { id: "s10", type: "new_arrivals", enabled: true, sortOrder: 10, config: { title: "New Arrivals", limit: 8 } },
+   927→  { id: "s11", type: "video", enabled: true, sortOrder: 11, config: {
+   928→    videoUrl: "https://videos.pexels.com/video-files/3015526/3015526-uhd_2560_1440_24fps.mp4",
+   929→    poster: img("photo-1606800052052-a08af7148866", 1920),
+   930→    heading: "Behind the craft",
+   931→    subheading: "Watch how our jewelry comes to life",
+   932→  } },
+   933→  { id: "s12", type: "testimonials", enabled: true, sortOrder: 12, config: { title: "Loved by thousands" } },
+   934→  { id: "s13", type: "instagram_gallery", enabled: true, sortOrder: 13, config: { title: "@auroraandco", handle: "@auroraandco" } },
+   935→  { id: "s14", type: "brand_story", enabled: true, sortOrder: 14, config: {
+   936→    heading: "Our Story",
+   937→    body: "Aurora & Co. was born in 2019 from a simple belief — that beautiful jewelry shouldn't require a luxury price tag. We work directly with master karigars across India, cutting out the middlemen, so you get heirloom-quality pieces at honest prices.",
+   938→    image: img("photo-1513885535751-8b9238bd3458", 1200),
+   939→    stats: [{ value: "50,000+", label: "Happy customers" }, { value: "4.8★", label: "Average rating" }, { value: "300+", label: "Unique designs" }],
+   940→  } },
+   941→  { id: "s15", type: "newsletter", enabled: true, sortOrder: 15, config: { title: "Join the Aurora Circle" } },
+   942→];
+   943→
+   944→// ---------------------------------------------------------------------------
+   945→// Theme settings
+   946→// ---------------------------------------------------------------------------
+   947→export const defaultThemeSettings: ThemeSettings = {
+   948→  primaryColor: "#6B2D5C",
+   949→  accentColor: "#B8956A",
+   950→  fontHeading: "Playfair Display",
+   951→  fontBody: "Inter",
+   952→  buttonRadius: 4,
+   953→  containerWidth: 1280,
+   954→  sectionSpacing: 64,
+   955→  announcement: { enabled: true, background: "#6B2D5C", text: "#FFFFFF" },
+   956→};
+   957→
+   958→// ---------------------------------------------------------------------------
+   959→// Lookup helpers
+   960→// ---------------------------------------------------------------------------
+   961→export function getProductBySlug(slug: string): Product | undefined {
+   962→  return products.find((p) => p.slug === slug && p.isPublished);
+   963→}
+   964→export function getProductById(id: string): Product | undefined {
+   965→  return products.find((p) => p.id === id && p.isPublished);
+   966→}
+   967→export function getCollectionBySlug(slug: string): Collection | undefined {
+   968→  return collections.find((c) => c.slug === slug);
+   969→}
+   970→export function getCategoryBySlug(slug: string): Category | undefined {
+   971→  return categories.find((c) => c.slug === slug);
+   972→}
+   973→export function getProductsByCollection(collectionId: string): Product[] {
+   974→  const col = collections.find((c) => c.id === collectionId);
+   975→  if (!col) return [];
+   976→  return col.productIds.map((id) => products.find((p) => p.id === id)).filter(Boolean) as Product[];
+   977→}
+   978→export function getProductsByCategory(categorySlug: string): Product[] {
+   979→  return products.filter((p) => p.category === categorySlug && p.isPublished);
+   980→}
+   981→export function getRelatedProducts(productId: string, limit = 4): Product[] {
+   982→  const p = products.find((x) => x.id === productId);
+   983→  if (!p) return [];
+   984→  const related = (p.relatedProductIds ?? []).map((id) => products.find((x) => x.id === id)).filter(Boolean) as Product[];
+   985→  if (related.length >= limit) return related.slice(0, limit);
+   986→  // fill with same-category
+   987→  const sameCategory = products.filter((x) => x.id !== productId && x.category === p.category && !related.find((r) => r.id === x.id));
+   988→  return [...related, ...sameCategory].slice(0, limit);
+   989→}
+   990→export function getCouponByCode(code: string): Coupon | undefined {
+   991→  return coupons.find((c) => c.code.toLowerCase() === code.toLowerCase() && c.isActive);
+   992→}
+   993→
