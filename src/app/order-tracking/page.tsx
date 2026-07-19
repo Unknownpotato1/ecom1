@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Search, Package, Truck, CheckCircle2, Clock, MapPin } from "lucide-react";
@@ -43,6 +43,14 @@ function getCurrentStep(order: StoredOrder): number {
 }
 
 export default function OrderTrackingPage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-3xl px-4 sm:px-6 py-16 text-center text-muted-foreground">Loading…</div>}>
+      <OrderTrackingContent />
+    </Suspense>
+  );
+}
+
+function OrderTrackingContent() {
   const params = useSearchParams();
   const initialOrderNo = params.get("order") ?? "";
   const [orderNo, setOrderNo] = useState(initialOrderNo);

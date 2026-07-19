@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, Package, Truck, Mail, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
 interface StoredOrder {
   orderNumber: string;
@@ -19,6 +19,14 @@ interface StoredOrder {
 }
 
 export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-3xl px-4 sm:px-6 py-16 text-center text-muted-foreground">Loading…</div>}>
+      <OrderSuccessContent />
+    </Suspense>
+  );
+}
+
+function OrderSuccessContent() {
   const params = useSearchParams();
   const orderNumber = params.get("order");
   const [order, setOrder] = useState<StoredOrder | null>(null);

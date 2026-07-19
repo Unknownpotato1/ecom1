@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { collections, categories } from "@/lib/data";
 import { CollectionsClient } from "./collections-client";
 import type { Metadata } from "next";
@@ -77,8 +78,11 @@ export default function CollectionsPage() {
         </div>
       </section>
 
-      {/* Product grid with filters */}
-      <CollectionsClient />
+      {/* Product grid with filters — wrapped in Suspense because
+          CollectionsClient uses useSearchParams (requires CSR bailout). */}
+      <Suspense fallback={<div className="mx-auto max-w-7xl px-4 sm:px-6 py-16 text-center text-muted-foreground">Loading products…</div>}>
+        <CollectionsClient />
+      </Suspense>
     </>
   );
 }

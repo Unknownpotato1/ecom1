@@ -8,9 +8,9 @@ import { ProductCard } from "@/components/product/product-card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, Suspense } from "react";
 
-export default function SearchPage() {
+function SearchContent() {
   const params = useSearchParams();
   const router = useRouter();
   const initialQ = params.get("q") ?? "";
@@ -127,5 +127,13 @@ export default function SearchPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-7xl px-4 sm:px-6 py-16 text-center text-muted-foreground">Loading search…</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }

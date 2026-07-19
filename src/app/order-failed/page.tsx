@@ -4,8 +4,17 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { XCircle, RefreshCw, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Suspense } from "react";
 
 export default function OrderFailedPage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-2xl px-4 sm:px-6 py-16 text-center text-muted-foreground">Loading…</div>}>
+      <OrderFailedContent />
+    </Suspense>
+  );
+}
+
+function OrderFailedContent() {
   const params = useSearchParams();
   const orderNumber = params.get("order");
 
