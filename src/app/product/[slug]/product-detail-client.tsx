@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart, Share2, ShoppingBag, Star, Truck, ShieldCheck, RefreshCw,
-  Banknote, Tag, Plus, Minus, Check, ChevronRight, Zap, Package, Clock
+  Banknote, Tag, Plus, Minus, Check, Zap, Package, Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -97,20 +97,7 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
 
   return (
     <>
-      {/* Breadcrumb */}
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-2">
-        <nav className="text-xs text-muted-foreground flex items-center gap-1 flex-wrap">
-          <Link href="/" className="hover:text-foreground">Home</Link>
-          <ChevronRight className="h-3 w-3" />
-          <Link href={`/collections?category=${product.category}`} className="hover:text-foreground capitalize">
-            {product.category.replace(/-/g, " ")}
-          </Link>
-          <ChevronRight className="h-3 w-3" />
-          <span className="text-foreground truncate">{product.name}</span>
-        </nav>
-      </div>
-
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-12">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12 overflow-x-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Gallery */}
           <div>

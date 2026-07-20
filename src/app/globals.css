@@ -148,6 +148,12 @@
     overflow-x: hidden;
     -webkit-text-size-adjust: 100%;
   }
+  /* Main content — prevent horizontal overflow on all pages */
+  main {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
   /* Premium scrollbar */
   ::-webkit-scrollbar {
     width: 10px;
