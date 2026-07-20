@@ -588,12 +588,12 @@ function FrequentlyBoughtTogether({ mainProduct, others }: { mainProduct: Produc
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-      <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 lg:flex-wrap lg:overflow-visible">
         <ProductThumb product={mainProduct} />
         {others.map((p) => (
-          <div key={p.id} className="flex items-center gap-2">
-            <span className="text-2xl text-muted-foreground">+</span>
-            <label className="cursor-pointer">
+          <div key={p.id} className="flex items-center gap-2 shrink-0">
+            <span className="text-2xl text-muted-foreground shrink-0">+</span>
+            <label className="cursor-pointer shrink-0">
               <div className={cn("relative", !selected[p.id] && "opacity-50")}>
                 <ProductThumb product={p} />
                 <input
@@ -631,7 +631,7 @@ function FrequentlyBoughtTogether({ mainProduct, others }: { mainProduct: Produc
 
 function ProductThumb({ product }: { product: Product }) {
   return (
-    <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-md overflow-hidden bg-muted">
+    <div className="w-20 h-24 sm:w-24 sm:h-28 rounded-md overflow-hidden bg-muted shrink-0">
       { }
       <img src={product.images[0]?.url} alt={product.name} className="w-full h-full object-cover" />
     </div>
