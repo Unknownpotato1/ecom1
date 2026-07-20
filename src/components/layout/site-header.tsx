@@ -3,13 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Search, ShoppingBag, Heart, User, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCartStore, useUIStore, useWishlistStore } from "@/lib/stores";
 import { useAuth } from "@/components/providers/auth-provider";
-import { announcements } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -24,7 +22,6 @@ const navLinks = [
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
-  const [announcementIdx, setAnnouncementIdx] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const openCart = useCartStore((s) => s.openCart);
@@ -49,12 +46,6 @@ export function SiteHeader() {
   }, [isAdmin]);
 
   useEffect(() => {
-    if (announcements.length <= 1) return;
-    const id = setInterval(() => setAnnouncementIdx((i) => (i + 1) % announcements.length), 4500);
-    return () => clearInterval(id);
-  }, []);
-
-  useEffect(() => {
     // Close mobile menu when route changes — use a setTimeout to defer state update
     // out of the render commit phase to satisfy react-hooks/set-state-in-effect.
     if (!mobileOpen) return;
@@ -72,24 +63,6 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* Announcement bar */}
-      <div className="bg-primary text-primary-foreground text-xs sm:text-sm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 h-9 flex items-center justify-center overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={announcementIdx}
-              initial={{ y: 12, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -12, opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="text-center font-medium tracking-wide"
-            >
-              {announcements[announcementIdx]?.text}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-
       <header
         className={cn(
           "sticky top-0 z-40 transition-all duration-300",
@@ -180,21 +153,6 @@ export function SiteHeader() {
                 )}
               </button>
             </div>
-          </div>
-        </div>
-
-        {/* Secondary nav row — desktop only */}
-        <div className={cn("hidden lg:block border-t transition-all", transparent ? "border-transparent" : "border-border/60")}>
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 flex items-center justify-center gap-8 h-11">
-            {navLinks.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="text-xs font-medium uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {l.label}
-              </Link>
-            ))}
           </div>
         </div>
       </header>

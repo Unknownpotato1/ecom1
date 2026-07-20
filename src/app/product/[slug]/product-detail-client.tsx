@@ -98,7 +98,7 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
   return (
     <>
       {/* Breadcrumb */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-4 pb-2">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-2">
         <nav className="text-xs text-muted-foreground flex items-center gap-1 flex-wrap">
           <Link href="/" className="hover:text-foreground">Home</Link>
           <ChevronRight className="h-3 w-3" />
@@ -110,7 +110,7 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
         </nav>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-12">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Gallery */}
           <div>
