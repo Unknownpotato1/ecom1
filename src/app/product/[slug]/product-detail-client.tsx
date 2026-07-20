@@ -98,14 +98,14 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
   return (
     <>
       <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12 overflow-x-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Gallery */}
-          <div>
+          <div className="min-w-0">
             <ProductGallery images={product.images} name={product.name} videoUrl={product.videoUrl} />
           </div>
 
           {/* Info */}
-          <div className="space-y-5">
+          <div className="space-y-5 min-w-0">
             {/* Badges */}
             <div className="flex flex-wrap gap-2">
               {product.isBestSeller && <Badge className="bg-gold text-gold-foreground">Bestseller</Badge>}

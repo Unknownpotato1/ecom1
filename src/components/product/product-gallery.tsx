@@ -90,13 +90,14 @@ export function ProductGallery({ images, name, videoUrl }: ProductGalleryProps) 
       {/* Main image — swipeable */}
       <div
         ref={containerRef}
-        className="relative aspect-square rounded-xl overflow-hidden bg-muted cursor-zoom-in group select-none"
-        onMouseMove={onMove}
-        onMouseEnter={() => setShowZoom(true)}
-        onMouseLeave={() => setShowZoom(false)}
+        className="relative aspect-square rounded-xl overflow-hidden bg-muted group select-none sm:cursor-zoom-in"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
+        // Desktop-only hover zoom
+        onMouseMove={onMove}
+        onMouseEnter={() => setShowZoom(true)}
+        onMouseLeave={() => setShowZoom(false)}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -105,7 +106,7 @@ export function ProductGallery({ images, name, videoUrl }: ProductGalleryProps) 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="absolute inset-0"
+            className="absolute inset-0 overflow-hidden"
           >
             {isVideo ? (
               <video className="w-full h-full object-cover" controls>
@@ -117,17 +118,27 @@ export function ProductGallery({ images, name, videoUrl }: ProductGalleryProps) 
                 <img
                   src={current?.url}
                   alt={current?.alt ?? name}
-                  className="w-full h-full object-cover transition-transform duration-200"
-                  style={{
-                    transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
-                    transform: showZoom ? "scale(2)" : "scale(1)",
-                  }}
+                  className="w-full h-full object-cover"
                   draggable={false}
                 />
                 {/* Hover-to-zoom hint — desktop only */}
-                <div className="hidden sm:block absolute top-3 right-3 bg-background/80 backdrop-blur px-2 py-1 rounded-md text-xs flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <div className="hidden sm:block absolute top-3 right-3 bg-background/80 backdrop-blur px-2 py-1 rounded-md text-xs flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                   <ZoomIn className="h-3 w-3" /> Hover to zoom
                 </div>
+                {/* Desktop zoom overlay — only shows on hover, never on mobile */}
+                {showZoom && !isVideo && (
+                   
+                  <img
+                    src={current?.url}
+                    alt=""
+                    aria-hidden="true"
+                    className="hidden sm:block absolute inset-0 w-full h-full object-cover pointer-events-none"
+                    style={{
+                      transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                      transform: "scale(2)",
+                    }}
+                  />
+                )}
               </>
             )}
           </motion.div>
