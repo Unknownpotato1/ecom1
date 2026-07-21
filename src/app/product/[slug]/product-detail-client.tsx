@@ -95,13 +95,21 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
           (driven by the nowrap tab triggers), causing the whole page to overflow
           horizontally on the right side.
 
-          px-0 sm:px-6 + pt-0 sm:pt-4: on phones the gallery goes edge-to-edge with
-          no gap below the sticky header (matches the user's request). On sm+ screens
-          the original padded layout is preserved. */}
-      <div className="mx-auto max-w-6xl px-0 sm:px-6 pt-0 sm:pt-4 pb-12 overflow-x-hidden min-w-0 w-full max-w-full">
+          px-4 sm:px-6: normal page padding so the info column, tabs, FBT and related
+          products sections have breathing room from the viewport edges.
+          pt-0 sm:pt-4: on phones the gallery sits flush below the sticky header
+          (no top gap); on sm+ screens the original top padding is restored.
+
+          Only the gallery image itself breaks out to be edge-to-edge on mobile —
+          see the -mx-4 sm:mx-0 trick on the gallery wrapper below. */}
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-0 sm:pt-4 pb-12 overflow-x-hidden min-w-0 w-full max-w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
-          {/* Gallery */}
-          <div className="min-w-0">
+          {/* Gallery — full-bleed on mobile only.
+              -mx-4 cancels out the outer container's px-4 so the image touches
+              both viewport edges on phones. sm:mx-0 restores the normal margin
+              on sm+ where the outer container has px-6 and we want the gallery
+              to sit inside that padding like every other section. */}
+          <div className="min-w-0 -mx-4 sm:mx-0">
             <ProductGallery images={product.images} name={product.name} videoUrl={product.videoUrl} />
           </div>
 
