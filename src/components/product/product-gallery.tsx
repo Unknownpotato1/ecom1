@@ -87,10 +87,10 @@ export function ProductGallery({ images, name, videoUrl }: ProductGalleryProps) 
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Main image — swipeable */}
+      {/* Main image — swipeable, edge-to-edge on mobile */}
       <div
         ref={containerRef}
-        className="relative aspect-square rounded-xl overflow-hidden bg-muted group select-none sm:cursor-zoom-in"
+        className="relative aspect-square rounded-none sm:rounded-xl overflow-hidden bg-muted group select-none sm:cursor-zoom-in"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
@@ -144,12 +144,9 @@ export function ProductGallery({ images, name, videoUrl }: ProductGalleryProps) 
           </motion.div>
         </AnimatePresence>
 
-        {/* Image counter badge — top-left */}
-        <div className="absolute top-3 left-3 bg-black/60 backdrop-blur text-white text-xs font-medium px-2.5 py-1 rounded-full">
-          {activeIdx + 1} / {mediaItems.length}
-        </div>
-
-        {/* Premium progress bar — bottom */}
+        {/* Premium progress bar — bottom (the only gallery indicator;
+            the dot indicator and the "N / M" counter badge were removed
+            per request — swipe to navigate, progress bar shows position). */}
         {mediaItems.length > 1 && (
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/20">
             <motion.div
@@ -161,27 +158,6 @@ export function ProductGallery({ images, name, videoUrl }: ProductGalleryProps) 
           </div>
         )}
       </div>
-
-      {/* Premium dot indicator */}
-      {mediaItems.length > 1 && (
-        <div className="flex items-center justify-center gap-2 py-1">
-          {mediaItems.map((item, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveIdx(i)}
-              className={cn(
-                "h-2 rounded-full transition-all duration-300",
-                i === activeIdx
-                  ? "w-8 bg-primary"
-                  : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50",
-              )}
-              aria-label={`Go to ${item.type} ${i + 1}`}
-            >
-              <span className="sr-only">{item.type} {i + 1}</span>
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

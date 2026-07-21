@@ -3,7 +3,6 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart, Share2, ShoppingBag, Star, Truck, ShieldCheck, RefreshCw,
   Banknote, Tag, Plus, Minus, Check, Zap, Package, Clock
@@ -34,7 +33,6 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
   const [selectedSize, setSelectedSize] = useState<string | undefined>(product.sizes[0]);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
-  const [showSticky, setShowSticky] = useState(false);
 
   const addItem = useCartStore((s) => s.addItem);
   const { toggle: toggleWishlist, has } = useWishlistStore();
@@ -44,12 +42,6 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
   useEffect(() => {
     addRecent(product.id);
   }, [product.id, addRecent]);
-
-  useEffect(() => {
-    const onScroll = () => setShowSticky(window.scrollY > 800);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const unitPrice = product.basePrice + (selectedVariant?.priceDelta ?? 0);
   const totalPrice = unitPrice * quantity;
@@ -101,8 +93,12 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
           Without it, default `min-width: auto` prevents the box from shrinking below
           its content's min-content size, which on mobile is wider than the viewport
           (driven by the nowrap tab triggers), causing the whole page to overflow
-          horizontally on the right side. */}
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12 overflow-x-hidden min-w-0 w-full max-w-full">
+          horizontally on the right side.
+
+          px-0 sm:px-6 + pt-0 sm:pt-4: on phones the gallery goes edge-to-edge with
+          no gap below the sticky header (matches the user's request). On sm+ screens
+          the original padded layout is preserved. */}
+      <div className="mx-auto max-w-6xl px-0 sm:px-6 pt-0 sm:pt-4 pb-12 overflow-x-hidden min-w-0 w-full max-w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Gallery */}
           <div className="min-w-0">
@@ -465,33 +461,6 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
           </section>
         )}
       </div>
-
-      {/* Sticky add to cart — mobile only */}
-      <AnimatePresence>
-        {showSticky && (
-          <motion.div
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            exit={{ y: 100 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="lg:hidden fixed bottom-16 left-0 right-0 z-30 glass border-t shadow-lg p-3"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-md overflow-hidden bg-muted shrink-0">
-                { }
-                <img src={product.images[0]?.url} alt={product.name} className="w-full h-full object-cover" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium line-clamp-1">{product.name}</p>
-                <p className="text-sm font-bold">{formatINR(unitPrice)}</p>
-              </div>
-              <Button onClick={onAddToCart} size="sm" className="shrink-0">
-                <ShoppingBag className="h-4 w-4 mr-1" /> Add
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   );
 }

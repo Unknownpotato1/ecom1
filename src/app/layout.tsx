@@ -12,7 +12,6 @@ import { BottomNav } from "@/components/layout/bottom-nav";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { SearchDrawer } from "@/components/search/search-drawer";
 import { WishlistDrawer } from "@/components/wishlist/wishlist-drawer";
-import { BackToTop } from "@/components/common/back-to-top";
 import { ExitIntentPopup } from "@/components/common/exit-intent-popup";
 import { RecentlyViewedSync } from "@/components/common/recently-viewed-sync";
 
@@ -94,7 +93,6 @@ export default function RootLayout({
               <CartDrawer />
               <SearchDrawer />
               <WishlistDrawer />
-              <BackToTop />
               <ExitIntentPopup />
               <RecentlyViewedSync />
               <Toaster />
