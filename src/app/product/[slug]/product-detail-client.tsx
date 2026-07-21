@@ -97,7 +97,12 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
 
   return (
     <>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12 overflow-x-hidden">
+      {/* min-w-0 is REQUIRED here: this div is a flex item of <main className="flex-1 flex flex-col">.
+          Without it, default `min-width: auto` prevents the box from shrinking below
+          its content's min-content size, which on mobile is wider than the viewport
+          (driven by the nowrap tab triggers), causing the whole page to overflow
+          horizontally on the right side. */}
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-4 pb-12 overflow-x-hidden min-w-0 w-full max-w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Gallery */}
           <div className="min-w-0">
@@ -387,18 +392,22 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
         {/* Tabs: description / specs / reviews */}
         <div className="mt-12 lg:mt-16">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="w-full justify-start overflow-x-auto no-scrollbar h-auto">
+            {/* min-w-0 lets the list shrink below its content's min-content width
+                (the sum of the 4 nowrap tab triggers) so the overflow-x-auto below
+                can actually engage and create a real horizontal scroll for the tabs
+                instead of forcing the whole page wider. */}
+            <TabsList className="w-full min-w-0 justify-start overflow-x-auto no-scrollbar h-auto">
               <TabsTrigger value="description">Description</TabsTrigger>
               <TabsTrigger value="specs">Specifications</TabsTrigger>
               <TabsTrigger value="reviews">Reviews ({product.reviewCount})</TabsTrigger>
               <TabsTrigger value="shipping">Shipping & Returns</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="description" className="mt-6 prose prose-sm max-w-none">
+            <TabsContent value="description" className="mt-6 prose prose-sm max-w-none min-w-0">
               <p className="text-base leading-relaxed text-foreground/90">{product.description}</p>
             </TabsContent>
 
-            <TabsContent value="specs" className="mt-6">
+            <TabsContent value="specs" className="mt-6 min-w-0">
               <div className="max-w-2xl">
                 <table className="w-full text-sm">
                   <tbody>
@@ -413,11 +422,11 @@ export function ProductDetailClient({ product, related, fbt, offers }: Props) {
               </div>
             </TabsContent>
 
-            <TabsContent value="reviews" className="mt-6">
+            <TabsContent value="reviews" className="mt-6 min-w-0">
               <ReviewsList product={product} />
             </TabsContent>
 
-            <TabsContent value="shipping" className="mt-6">
+            <TabsContent value="shipping" className="mt-6 min-w-0">
               <div className="prose prose-sm max-w-none">
                 <h4 className="font-semibold">Shipping</h4>
                 <p className="text-muted-foreground">
@@ -588,7 +597,10 @@ function FrequentlyBoughtTogether({ mainProduct, others }: { mainProduct: Produc
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 lg:flex-wrap lg:overflow-visible">
+      {/* min-w-0: this is a grid item, and the default min-width: auto would let the
+          horizontal product thumbnails push the grid (and therefore the whole page)
+          wider than the mobile viewport. */}
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 min-w-0 lg:flex-wrap lg:overflow-visible">
         <ProductThumb product={mainProduct} />
         {others.map((p) => (
           <div key={p.id} className="flex items-center gap-2 shrink-0">
