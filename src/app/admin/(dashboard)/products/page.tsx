@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Plus, Search, MoreHorizontal, Pencil, Trash2, Copy, Package, Star, Sparkles, Gift, Zap } from "lucide-react";
+import { Plus, Search, MoreHorizontal, Pencil, Trash2, Copy, Package, Star, Sparkles, Gift, Zap, X } from "lucide-react";
 import { AdminPageHeader } from "@/components/admin/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { ImagePicker } from "@/components/admin/image-picker";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   Select,
@@ -310,8 +311,13 @@ function AddProductDialog() {
   const [isGiftHamper, setIsGiftHamper] = useState(false);
   const [isPublished, setIsPublished] = useState(true);
   const [imageUrl, setImageUrl] = useState("");
+  const [additionalImages, setAdditionalImages] = useState<string[]>([]);
   const [seoTitle, setSeoTitle] = useState("");
   const [seoDescription, setSeoDescription] = useState("");
+  // Specifications — label/value pairs shown on the product page's Specs tab
+  const [specs, setSpecs] = useState<{ label: string; value: string }[]>([
+    { label: "", value: "" },
+  ]);
 
   const slug = slugify(name);
 
@@ -330,8 +336,10 @@ function AddProductDialog() {
     setIsGiftHamper(false);
     setIsPublished(true);
     setImageUrl("");
+    setAdditionalImages([]);
     setSeoTitle("");
     setSeoDescription("");
+    setSpecs([{ label: "", value: "" }]);
   };
 
   const handleSave = () => {
@@ -460,13 +468,123 @@ function AddProductDialog() {
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="p-img">Main Image URL</Label>
-            <Input
-              id="p-img"
+            <ImagePicker
+              label="Main Image"
               value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://images.unsplash.com/…"
+              onChange={setImageUrl}
+              description="Primary product image shown first in the gallery"
+              aspect="square"
             />
+          </div>
+
+          {/* Additional images */}
+          <div className="grid gap-2">
+            <Label>Additional Images (optional)</Label>
+            <p className="text-[11px] text-muted-foreground -mt-1">
+              Add more images for the product gallery (swipeable on mobile)
+            </p>
+            <div className="space-y-2">
+              {additionalImages.map((img, i) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <div className="w-12 h-12 rounded-md overflow-hidden border bg-muted shrink-0">
+                    {img && (
+                       
+                      <img src={img} alt={`Additional ${i + 1}`} className="w-full h-full object-cover" />
+                    )}
+                  </div>
+                  <Input
+                    value={img}
+                    onChange={(e) => {
+                      const next = [...additionalImages];
+                      next[i] = e.target.value;
+                      setAdditionalImages(next);
+                    }}
+                    placeholder="Image URL or use the picker below"
+                    className="flex-1 text-xs"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 shrink-0"
+                    onClick={() => setAdditionalImages(additionalImages.filter((_, idx) => idx !== i))}
+                  >
+                    <X className="size-3.5" />
+                  </Button>
+                </div>
+              ))}
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setAdditionalImages([...additionalImages, ""])}
+                >
+                  <Plus className="size-3.5 mr-1" /> Add Image Slot
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Specifications — shown on product page Specs tab */}
+          <div className="rounded-lg border bg-muted/30 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Specifications
+                </p>
+                <p className="text-[11px] text-muted-foreground">
+                  Shown in the "Specifications" tab on the product page
+                </p>
+              </div>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSpecs([...specs, { label: "", value: "" }])}
+              >
+                <Plus className="size-3.5 mr-1" /> Add Row
+              </Button>
+            </div>
+            <div className="space-y-2">
+              {specs.map((spec, i) => (
+                <div key={i} className="flex gap-2 items-center">
+                  <Input
+                    value={spec.label}
+                    onChange={(e) => {
+                      const next = [...specs];
+                      next[i] = { ...next[i]!, label: e.target.value };
+                      setSpecs(next);
+                    }}
+                    placeholder="Label (e.g., Material)"
+                    className="flex-1 text-xs h-8"
+                  />
+                  <Input
+                    value={spec.value}
+                    onChange={(e) => {
+                      const next = [...specs];
+                      next[i] = { ...next[i]!, value: e.target.value };
+                      setSpecs(next);
+                    }}
+                    placeholder="Value (e.g., Brass, gold-plated)"
+                    className="flex-1 text-xs h-8"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="size-8 shrink-0"
+                    onClick={() => setSpecs(specs.filter((_, idx) => idx !== i))}
+                    disabled={specs.length === 1}
+                  >
+                    <X className="size-3.5" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-2">
+              Example: Material → Brass, gold-plated | Weight → 180g | Closure → Adjustable hook
+            </p>
           </div>
 
           <div className="rounded-lg border bg-muted/30 p-4">
