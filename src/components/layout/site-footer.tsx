@@ -56,7 +56,7 @@ export function SiteFooter() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
           {trustBadges.map(({ icon: Icon, label }) => (
             <div key={label} className="flex items-center gap-3 justify-center md:justify-start">
-              <Icon className="h-6 w-6 text-gold" />
+              <Icon className="h-6 w-6 text-foreground" />
               <span className="text-sm font-medium">{label}</span>
             </div>
           ))}
@@ -69,7 +69,7 @@ export function SiteFooter() {
           {/* Brand + newsletter */}
           <div className="lg:col-span-4 space-y-6">
             <Link href="/" className="font-serif text-3xl font-bold">
-              Aurora <span className="text-gold-gradient">& Co.</span>
+              Aurora <span className="text-foreground">& Co.</span>
             </Link>
             <p className="text-sm text-background/70 max-w-xs leading-relaxed">
               Handcrafted artificial jewelry and curated gift hampers. Made in India, shipped with love across the country.
@@ -100,7 +100,7 @@ export function SiteFooter() {
                 <ul className="space-y-2.5">
                   {footerLinks.shop.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="text-sm text-background/70 hover:text-gold transition-colors">
+                      <Link href={l.href} className="text-sm text-background/70 hover:text-foreground transition-colors">
                         {l.label}
                       </Link>
                     </li>
@@ -112,7 +112,7 @@ export function SiteFooter() {
                 <ul className="space-y-2.5">
                   {footerLinks.help.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="text-sm text-background/70 hover:text-gold transition-colors">
+                      <Link href={l.href} className="text-sm text-background/70 hover:text-foreground transition-colors">
                         {l.label}
                       </Link>
                     </li>
@@ -124,7 +124,7 @@ export function SiteFooter() {
                 <ul className="space-y-2.5">
                   {footerLinks.company.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="text-sm text-background/70 hover:text-gold transition-colors">
+                      <Link href={l.href} className="text-sm text-background/70 hover:text-foreground transition-colors">
                         {l.label}
                       </Link>
                     </li>
@@ -135,23 +135,23 @@ export function SiteFooter() {
               {/* Contact */}
               <div className="space-y-3">
                 <h4 className="text-sm font-semibold mb-4 uppercase tracking-wider">Contact</h4>
-                <a href="tel:+918000000000" className="flex items-center gap-2 text-sm text-background/70 hover:text-gold">
+                <a href="tel:+918000000000" className="flex items-center gap-2 text-sm text-background/70 hover:text-foreground">
                   <Phone className="h-4 w-4 shrink-0" /> +91 80000 00000
                 </a>
-                <a href="mailto:hello@aurora-co.in" className="flex items-center gap-2 text-sm text-background/70 hover:text-gold">
+                <a href="mailto:hello@aurora-co.in" className="flex items-center gap-2 text-sm text-background/70 hover:text-foreground">
                   <Mail className="h-4 w-4 shrink-0" /> hello@aurora-co.in
                 </a>
                 <p className="flex items-start gap-2 text-sm text-background/70">
                   <MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Mumbai, Maharashtra, India
                 </p>
                 <div className="flex items-center gap-3 pt-2">
-                  <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="text-background/70 hover:text-gold">
+                  <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="text-background/70 hover:text-foreground">
                     <Instagram className="h-5 w-5" />
                   </a>
-                  <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="text-background/70 hover:text-gold">
+                  <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="text-background/70 hover:text-foreground">
                     <Facebook className="h-5 w-5" />
                   </a>
-                  <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube" className="text-background/70 hover:text-gold">
+                  <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube" className="text-background/70 hover:text-foreground">
                     <Youtube className="h-5 w-5" />
                   </a>
                 </div>

@@ -48,12 +48,12 @@ export function ProductCard({ product, priority, className }: ProductCardProps) 
       onMouseEnter={() => product.images.length > 1 && setImgIdx(1)}
       onMouseLeave={() => setImgIdx(0)}
     >
-      <div className="relative aspect-[4/5] rounded-lg overflow-hidden bg-muted">
+      <div className="relative aspect-[4/5] overflow-hidden bg-muted">
         { }
         <img
           src={product.images[imgIdx]?.url ?? product.images[0]?.url}
           alt={product.images[imgIdx]?.alt ?? product.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
           loading={priority ? "eager" : "lazy"}
           fetchPriority={priority ? "high" : "auto"}
         />
@@ -61,18 +61,18 @@ export function ProductCard({ product, priority, className }: ProductCardProps) 
         {/* Top-left badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-1.5">
           {discount > 0 && (
-            <Badge variant="destructive" className="bg-destructive text-destructive-foreground">
+            <Badge variant="destructive" className="bg-destructive text-destructive-foreground rounded-none">
               -{discount}%
             </Badge>
           )}
           {product.isNewArrival && (
-            <Badge className="bg-foreground text-background">NEW</Badge>
+            <Badge className="bg-foreground text-background rounded-none">NEW</Badge>
           )}
           {product.isBestSeller && (
-            <Badge className="bg-gold text-gold-foreground">BESTSELLER</Badge>
+            <Badge className="bg-foreground text-background rounded-none">BESTSELLER</Badge>
           )}
           {product.isLimitedOffer && (
-            <Badge variant="secondary" className="bg-red-600 text-white">LIMITED</Badge>
+            <Badge variant="secondary" className="bg-foreground text-background rounded-none">LIMITED</Badge>
           )}
         </div>
 
@@ -148,7 +148,7 @@ export function ProductCard({ product, priority, className }: ProductCardProps) 
 export function ProductCardSkeleton() {
   return (
     <div className="block">
-      <div className="aspect-[4/5] rounded-lg shimmer" />
+      <div className="aspect-[4/5] shimmer" />
       <div className="mt-3 space-y-2">
         <div className="h-3 w-1/3 rounded shimmer" />
         <div className="h-4 w-3/4 rounded shimmer" />

@@ -105,7 +105,7 @@ export function SiteHeader() {
               aria-label="Aurora & Co. home"
             >
               <span className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">
-                Aurora <span className="text-gold-gradient">& Co.</span>
+                Aurora <span className="text-foreground">& Co.</span>
               </span>
               <span className="hidden sm:block text-[10px] tracking-[0.25em] uppercase text-muted-foreground -mt-1">
                 Jewelry & Hampers
@@ -162,7 +162,7 @@ export function SiteHeader() {
         <SheetContent side="left" className="w-[300px] sm:w-[340px] p-0">
           <SheetHeader className="p-6 border-b">
             <SheetTitle className="font-serif text-2xl">
-              Aurora <span className="text-gold-gradient">& Co.</span>
+              Aurora <span className="text-foreground">& Co.</span>
             </SheetTitle>
           </SheetHeader>
           <nav className="flex flex-col p-2">
